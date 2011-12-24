@@ -1,0 +1,3 @@
+[submodule "libwired"]
+	path = libwired
+	url = https://bitbucket.org/nark/libwired.git
