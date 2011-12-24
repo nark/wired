@@ -1,0 +1,245 @@
+# Process this file with autoconf to produce a configure script
+AC_INIT([wired], [2.0], [axel@zankasoftware.com])
+AC_PREREQ([2.57])
+AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_HEADER([config.h])
+
+# Include shared macros
+m4_include([libwired/config.m4])
+
+# Get host
+AC_CANONICAL_HOST
+
+# Get Subversion revision number
+WI_CHECK_SVN_REVISION
+
+# These are used in the source code
+AC_DEFINE([WD_VERSION], ["AC_PACKAGE_VERSION"], [Application version])
+AC_DEFINE([WD_BUGREPORT], ["AC_PACKAGE_BUGREPORT"], [Maintainer's email address])
+
+# These are used in the Makefile
+AC_SUBST([WD_VERSION], ["AC_PACKAGE_VERSION"])
+
+
+#######################################################################
+# Checks for compilers
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+
+#######################################################################
+# Checks for flags
+
+# Check for some other user to use than "wired"
+AC_MSG_CHECKING([for user])
+AC_ARG_WITH([user], AC_HELP_STRING([--with-user=USER], [install files as USER [[wired]]]))
+
+if test -n "$with_user"; then
+	wd_user="$with_user"
+else
+	wd_user="wired"
+fi
+
+if perl -e "exit(defined(getpwnam(\"$wd_user\")))"; then
+	if test -n "$with_user"; then
+		AC_MSG_ERROR([no such user "$with_user", please set another --with-user])
+	else
+		wd_user=`perl -e "print ((getpwuid($<))[[0]])"`
+		
+		if test -z "$wd_user"; then
+			AC_MSG_ERROR([unable to retrieve user name, please set one with --with-user])
+		fi
+	fi
+fi
+
+AC_MSG_RESULT([$wd_user])
+AC_DEFINE_UNQUOTED([WD_USER], ["$wd_user"], [User name])
+AC_SUBST([WD_USER], ["$wd_user"])
+
+
+# Check for some other group to use than "daemon"
+AC_MSG_CHECKING([for group])
+AC_ARG_WITH([group], AC_HELP_STRING([--with-group=GROUP], [install files as GROUP [[daemon]]]))
+
+if test -n "$with_group"; then
+	wd_group="$with_group"
+else
+	wd_group="daemon"
+fi
+
+if perl -e "exit(defined(getgrnam(\"$wd_group\")))"; then
+	if test -n "$with_group"; then
+		AC_MSG_ERROR([no such group "$with_group", please set another --with-group])
+	else
+		wd_group=`perl -e "print ((getgrgid(((getpwuid($<))[[3]])))[[0]])"`
+		
+		if test -z "$wd_group"; then
+			AC_MSG_ERROR([unable to retrieve group name, please set one with --with-group])
+		fi
+	fi
+fi
+
+AC_MSG_RESULT([$wd_group])
+AC_DEFINE_UNQUOTED([WD_GROUP], ["$wd_group"], [Group name])
+AC_SUBST([WD_GROUP], ["$wd_group"])
+
+
+# Check for warnings
+AC_MSG_CHECKING([for warning flags])
+AC_ARG_ENABLE([warnings], AC_HELP_STRING([--enable-warnings], [enable warnings]))
+
+if test -n "$enable_warnings"; then
+	WI_INCLUDE_WARNING_FLAG([-W])
+	WI_INCLUDE_WARNING_FLAG([-Wall])
+	WI_INCLUDE_WARNING_FLAG([-Wno-unknown-pragmas])
+	WI_INCLUDE_WARNING_FLAG([-Wno-unused-parameter])
+	WI_INCLUDE_WARNING_FLAG([-Wsign-compare])
+	WI_INCLUDE_WARNING_FLAG([-Wstrict-prototypes])
+	WI_INCLUDE_WARNING_FLAG([-Wmissing-prototypes])
+	WI_INCLUDE_WARNING_FLAG([-Wmissing-declarations])
+	WI_INCLUDE_WARNING_FLAG([-Wredundant-decls])
+
+	AC_MSG_RESULT([$WARNFLAGS])
+else
+	AC_MSG_RESULT([none])
+fi
+
+
+# Check for wired directory name
+AC_ARG_WITH([wireddir], AC_HELP_STRING([--with-wireddir=DIR], [install server components in PREFIX/DIR [[wired]]]))
+
+if test -n "$with_wireddir"; then
+	wd_wireddir="$with_wireddir"
+	AC_SUBST([wireddir], ["$with_wireddir"])
+else
+	wd_wireddir="wired"
+	AC_SUBST([wireddir], ['wired'])
+fi
+
+
+# Check for fake prefix
+AC_ARG_WITH([fake_prefix])
+
+if test -n "$with_fake_prefix"; then
+	AC_SUBST([fake_prefix], ["$with_fake_prefix"])
+	AC_DEFINE_UNQUOTED([WD_ROOT], ["${with_fake_prefix}/${wireddir}"], [Root directory])
+else
+	AC_SUBST([fake_prefix], ['${prefix}'])
+	AC_DEFINE_UNQUOTED([WD_ROOT], ["/usr/local/${wireddir}"], [Root directory])
+fi
+
+
+# Check for object directory name
+AC_ARG_WITH([objdir])
+
+if test -n "$with_objdir"; then
+	AC_SUBST([objdir], ["$with_objdir"])
+	wd_libwired_objdir="$with_objdir"
+else
+	AC_SUBST([objdir], ["obj"])
+	wd_libwired_objdir="../obj"
+fi
+
+
+# Check for run directory name
+AC_ARG_WITH([rundir])
+
+if test -n "$with_rundir"; then
+	AC_SUBST([rundir], ["$with_rundir"])
+	wd_libwired_rundir="$with_rundir/libwired"
+else
+	AC_SUBST([rundir], ["run"])
+	wd_libwired_rundir="../run/libwired"
+fi
+
+
+# Check for maintainer mode
+AC_ARG_ENABLE([maintainer_mode])
+
+if test -n "$enable_maintainer_mode"; then
+	AC_SUBST([WD_MAINTAINER], [1])
+else
+	AC_SUBST([WD_MAINTAINER], [0])
+fi
+
+
+#######################################################################
+# Checks for additional paths
+
+WI_INCLUDE_EXTRA_INCLUDE_PATHS
+WI_INCLUDE_EXTRA_LIBRARY_PATHS
+
+
+#######################################################################
+# Checks for libraries
+
+WI_CHECK_LIBWIRED
+WI_INCLUDE_PTHREADS
+WI_INCLUDE_LIBWIRED_LIBRARIES
+WI_INCLUDE_SQLITE3_LIBRARY
+WI_INCLUDE_P7_LIBRARIES
+
+AC_CHECK_HEADERS([dns_sd.h], [
+	AC_CHECK_LIB([dns_sd], [DNSServiceRegister], [
+		LIBS="$LIBS -ldns_sd"
+	], [])
+])
+
+
+#######################################################################
+# Checks for typedefs, structures, and compiler characteristics
+
+AC_SYS_LARGEFILE
+AC_DEFINE([_DARWIN_USE_64_BIT_INODE], [1], [64-bit ino_t on Darwin])
+
+
+#######################################################################
+# Output
+
+AC_CONFIG_FILES([Makefile])
+
+# Configure libwired
+AC_ARG_WITH([libwired], , [
+	if test "$with_libwired" = "yes"; then
+		wd_libwired=1
+	fi
+], [
+	wd_libwired=1
+])
+
+if test "$wd_libwired"; then
+	ac_configure_args="$ac_configure_args --enable-pthreads --enable-libxml2 --enable-sqlite3 --enable-p7 --with-rundir=$wd_libwired_rundir --with-objdir=$wd_libwired_objdir"
+	AC_CONFIG_SUBDIRS([libwired])
+fi
+
+AC_OUTPUT
+
+
+#######################################################################
+# Print summary
+
+A=$(eval echo ${prefix});	A=$(eval echo ${A})
+B=$(eval echo ${mandir});	B=$(eval echo ${B})
+
+echo ""
+echo "wired has been configured with the following options:"
+
+echo ""
+echo "                Root: ${A}/${wd_wireddir}"
+echo "                      ${B}/man1/wiredctl.1"
+echo "                      ${B}/man5/wired.conf.5"
+echo "                      ${B}/man8/wired.8"
+echo "                User: ${wd_user}"
+echo "               Group: ${wd_group}"
+
+echo ""
+echo "                Host: ${host}"
+echo "            Compiler: ${CC}"
+echo "      Compiler flags: ${CFLAGS}"
+echo "  Preprocessor flags: ${CPPFLAGS}"
+echo "        Linker flags: ${LDFLAGS}"
+echo "           Libraries: ${LIBS}"
+
+echo ""

@@ -1,0 +1,9 @@
+//
+//  wired-Prefix.pch
+//  wired
+//
+//  Created by Rafaël Warnault on 21/11/11.
+//  Copyright (c) 2011 OPALE. All rights reserved.
+//
+
+//#include <openssl/sha.h>

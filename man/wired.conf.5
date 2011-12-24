@@ -1,0 +1,145 @@
+.\" wired.conf.5
+.\"
+.\" Copyright (c) 2003-2007 Axel Andersson
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, and the entire permission notice in its entirety,
+.\"    including the disclaimer of warranties.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+.\" INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+.\" AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+.\" MARCUS D. WATTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+.\" BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+.\" OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+.\" ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+.\" TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+.\" USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.Dd May 27, 2007
+.Dt WIRED.CONF 5
+.Os
+.Sh NAME
+.Nm wired.conf
+.Nd
+.Xr wired 8
+configuration file
+.Sh DESCRIPTION
+.Nm wired.conf
+is the
+.Xr wired 8
+configuration file. It consists of keywords and arguments in a
+.Sq key = value
+format, separated by newlines. Lines starting with
+.Sq #
+are ignored.
+.Pp
+Paths are interpreted as absolute if they begin with a
+.Sq / ,
+otherwise they are relative to the server root. Boolean values should be either
+.Sq yes
+or
+.Sq no .
+.Pp
+The possible keywords and their meanings are as follows:
+.Bl -tag -width
+.It Va address
+A specific address, host name or interface name to bind to, instead of binding to all available addresses. Can be specified more than once, for each address the server should listen on.
+.Pp
+Example: address = 127.0.0.1, address = localhost, address = eth0
+.It Va banner
+Path to an image file that will be sent to clients as the banner. PNG file format is recommended. Maximum image size is 200x32 pixels.
+.Pp
+Example: banner = banner.png
+.It Va client downloads
+Maximum number of downloads per client.
+.Pp
+Example: client downloads = 1
+.It Va client uploads
+Maximum number of uploads per client.
+.Pp
+Example: client uploads = 1
+.It Va description
+A short description of the server.
+.Pp
+Example: description = My Wired Server
+.It Va files
+Path to the files directory.
+.Pp
+Example: files = files
+.It Va group
+Name or id of the group that
+.Xr wired 8
+should operate as.
+.Pp
+Example: group = daemon
+.It Va ignore expression
+A regular expression of patterns to ignore in file listings. Its format is described in
+.Xr re_format 7 .
+.Pp
+Example: ignore expression = /CVS/
+.It Va index time
+If set, indexes files after this many seconds. Without it, no automatic indexing takes place.
+.Pp
+Example: index time = 3600
+.It Va ip
+IP address to send to the tracker. If this is not set, the tracker will automatically register the server as the originating IP address. Set this to your external address if you're on the same subnet as the tracker, and you're using private addresses behind a firewall.
+.Pp
+Example: ip = 127.0.0.1
+.It Va map port
+Automatically map port using NAT-PMP. Only available on Mac OS X 10.5.
+.Pp
+Example: map port = yes
+.It Va name
+Name of the server.
+.Pp
+Example: name = Wired Server
+.It Va port
+Port number to listen on.
+.Pp
+Example: port = 4871
+.It Va show dot files
+If set, file listings will include files beginning with a `.'.
+.Pp
+Example: show dot files = no
+.It Va show invisible files
+If set, file listings will include files that are marked invisible by Mac OS X. Only available on Mac OS X.
+.Pp
+Example: show invisible files = no
+.It Va total downloads
+Maximum number of downloads across all clients.
+.Pp
+Example: total downloads = 10
+.It Va total download speed
+Maximum speed of downloads in bytes/sec.
+.Pp
+Example: total download speed = 64000
+.It Va total uploads
+Maximum number of uploads across all clients.
+.Pp
+Example: total uploads = 10
+.It Va total upload speed
+Maximum speed of upload in bytes/sec.
+.Pp
+Example: total upload speed = 64000
+.It Va user
+Name or id of the user that
+.Xr wired 8
+should operate as.
+.Pp
+Example: user = wired
+.El
+.Sh AUTHORS
+.Nm wired
+and the Wired protocol were developed by Axel Andersson, Zanka Software.
+.Sh SEE ALSO
+.Xr wired 8 ,
+.Xr wiredctl 1

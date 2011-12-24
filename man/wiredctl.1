@@ -1,0 +1,99 @@
+.\" wiredctl.1
+.\"
+.\" Copyright (c) 2003-2007 Axel Andersson
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, and the entire permission notice in its entirety,
+.\"    including the disclaimer of warranties.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+.\" INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+.\" AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+.\" MARCUS D. WATTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+.\" BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+.\" OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+.\" ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+.\" TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+.\" USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.Dd Feb 5, 2007
+.Dt WIREDCTL 1
+.Os
+.Sh NAME
+.Nm wiredctl
+.Nd
+.Xr wired 8
+server control interface
+.Sh SYNOPSIS
+.Nm wiredctl
+.Ar start | stop | restart | reload | index | register | config | configtest | debug | status | help
+.Sh DESCRIPTION
+.Nm wiredctl
+is a frontend to
+.Xr wired 8 .
+It is designed to control the starting and stopping of the server in an easier manner.
+.Pp
+The commands are as follows:
+.Bl -tag -width
+.It Va start
+Start the
+.Xr wired 8
+daemon.
+.It Va stop
+Stops the
+.Xr wired 8
+daemon.
+.It Va restart
+Restarts the
+.Xr wired 8
+daemon.
+.It Va reload
+Tells the
+.Xr wired 8
+daemon to reload its configuration by sending it the signal HUP.
+.It Va index
+Tells the
+.Xr wired 8
+daemon to index its files by sending it the signal USR1.
+.It Va register
+Tells the
+.Xr wired 8
+daemon to register with trackers by sending it the signal USR2.
+.It Va config
+Prints the current active configuration.
+.It Va configtest
+Runs a configuration syntax test, to verify that the config file will be accepted.
+.It Va debug
+Start the
+.Xr wired 8
+daemon in
+.Xr gdb 1 .
+.It Va status
+Prints a status summary.
+.It Va help
+Prints a quick command guide.
+.El
+.Pp
+Additional argument flags passed with the
+.Va start
+and
+.Va restart
+commands are passed directly to
+.Xr wired 8 , in addition to the default flags. The default flags can be set by opening
+.Nm wiredctl
+in any text editor and editing the variable
+.Va WIREDFLAGS .
+.Sh AUTHORS
+.Nm wiredctl
+and the Wired protocol were developed by Axel Andersson, Zanka Software.
+.Sh SEE ALSO
+.Xr wired 8 ,
+.Xr wired.conf 5

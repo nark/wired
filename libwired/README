@@ -1,0 +1,8 @@
+README
+======
+
+This library was created and is mainly intended for use by the Wired
+network suite (http://www.zankasoftware.com/wired/). It contains
+collections and other data structures, and portable abstractions for
+many OS services, like threads, sockets, files, etc. It is unfortunately
+completely undocumented.

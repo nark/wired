@@ -1,0 +1,110 @@
+NEWS
+====
+
+2.0
+- 
+
+1.3.3
+- Increase performance for counting number of files inside a directory
+- Fix a crash if starting with no arguments at all
+- Fix problem with deleting directories
+- Fix parsing of IPv6 addresses in config
+- Fix a crash related to logging
+- Fix a crash on Linux related to users going idle
+- Respect the "zeroconf" setting in config
+- Correctly figure out count and size of files
+- Read and write Finder comments (Mac OS X)
+- Automatically generate SSL certificate if not configured
+- Report an error when uploading to non-writable directory
+
+1.3.2
+- Mac OS X 10.5 support
+- Fix a problem with posting longer news posts
+- Fix a problem with renaming files when changing case only
+- Fix many problems with the transfer queue system that resulted in erroneous "Queue Limit Exceeded" errors
+- Fix some localization bugs
+
+1.3.1
+- Fix problem with main thread hanging after registering with a tracker sometimes
+- Fix issue where, for some types of crashes, wired.pid was not removed at exit
+- Fix "directory too deep" messages when indexing a lot of aliases
+- Optimize indexed searches
+
+1.3
+- Support for IPv6
+- Can configure and register with multiple trackers
+- File operations (listing, searching, indexing) are multiple times faster
+- Transfer limits take effect immediately on running transfers
+- Improve documentation
+
+1.2.5
+- Allow the setting of folder type and comments on Mac aliases pointing to folders (Mac OS X)
+- Add a version field to the panel (Mac OS X)
+- Properly rename the symlinks and not the files or folders they point to
+
+1.2.4
+- Never index drop box contents for searches
+- Add additional log messages about index/search failures
+- Fix a crash when loading the banner (Linux)
+- Fix a crash when starting with a config file without user/group settings
+- When editing a group, all users belonging to that group would have its group membership cleared, this is now fixed
+- The tracker registration would sometimes hang while waiting for a response, resulting in failure to mark idle clients, this has now been threaded
+- Fix a problem with the server silently refusing to start after a crash
+
+1.2.3
+- Fix a few problems with queueing multiple files, and queueing files in tight succession (i.e. folder transfers)
+- Fix a problem with logging in (also fixes "(null)" renames in client chat)
+
+1.2.2
+- When creating a new folder, set it to the same type as the folder it was created in
+- Increase the byte size limit of the banner
+- Fix the select button under log files in the panel (Mac OS X)
+- Fix another issue with groups
+
+1.2.1
+- Fix a bug involving the certificate generation in the panel (Mac OS X)
+- Fix two bugs that prevent accounts belonging to groups to function properly
+
+1.2
+- Use updated protocol, version 1.1 (remains compatible with 1.0 clients)
+- Remove Hotline support
+- Support for custom client icons
+- Support for custom client status messages
+- Support for dynamically set uploads and drop box folders
+- Support for file comments
+- Support for chat topics
+- Date fields in file listings
+- Performance improvements in the transfers system
+- Option to create an index of all files and use the index for client file searches, dramatically decreasing search times on large servers
+- Add more missing settings to the panel, including an option generate server certificates (Mac OS X)
+- Add a setting to limit the number of news posts saved
+- Reduce number of settings that require a restart
+- Fix a potential race condition crash
+- Fix an issue with corrupted status files
+- Fix a bug in file searches when descending into Mac aliases pointing to folders (Mac OS X)
+
+1.1
+- Add support for tracker
+- Generate OpenSSL certificates by default, and only revert to anonymous ciphers if no certificate could be used
+- Changing the files directory no longer requires a server restart
+- Add option to allow log messages go to a separate file instead of the default syslog
+- Allow ports below 1024 to be used for communication
+- Add options to ignore dot files, Finder invisibles or any pattern matching a regular expression in file listings (Mac OS X)
+- Fix a bug where sending very large messages would result in a protocol error
+- Fix a bug in deep listings of aliases
+- Fix a bug with file sizes, often resulting in failure of trying to download files (Linux)
+- Fix panel to make speed limits really appear as KB/s and not bytes/s (Mac OS X)
+- Fix a bug where a user could join a private chat multiple times
+- Fix a crash in the clearing of empty private chats
+- Fix a bug with resuming partially downloaded files past 2 GB
+
+1.0.2
+- Add support for aliases
+- Fix another Hotline related crash
+- Fix a bug in Hotline chat
+
+1.0.1
+- Fix a Hotline related crash
+
+1.0
+- Initial release

@@ -1,0 +1,61 @@
+PREREQUISITES
+=============
+
+To install the Wired server, you need the following prerequisites:
+
+    1. OpenSSL Library
+       http://www.openssl.org/source/
+	   
+	2. libxml2
+	   http://xmlsoft.org/
+	   
+	3. zlib
+	   http://zlib.net/
+
+These are usually distributed with operating systems.
+
+
+INSTALLATION
+============
+
+To install the Wired server, follow these instructions:
+
+    1. Unpack the tarball:
+
+         tar -xzf wired-X.X.tar.gz
+         cd wired-X.X.tar.gz
+
+    2. Run the configuration script:
+
+         ./configure
+
+       This will install the Wired server into /usr/local by default. To
+       change this, instead run:
+
+         ./configure --prefix=/path
+
+       To change the default user the installation will write files as,
+       run:
+
+         ./configure --with-user=USER
+
+    3. Run make. Note, GNU make is required.
+
+         gmake
+
+    4. If make is successful, install the software:
+
+         gmake install
+
+       This will require write permissions to /usr/local/wired, or
+       whatever directory you set as the prefix above.
+
+
+RUNNING
+=======
+
+To start an installed Wired server, run:
+
+    /usr/local/wired/wiredctl start
+
+By default a user with the login "admin" and no password is created.

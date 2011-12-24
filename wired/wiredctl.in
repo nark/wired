@@ -1,0 +1,236 @@
+#!/bin/sh
+
+# The path to your config file
+CONFIGFILE="@wireddir@/etc/wired.conf"
+
+# The path to your pid file
+PIDFILE="@wireddir@/wired.pid"
+
+# The path to your status file
+STATUSFILE="@wireddir@/wired.status"
+
+# The path to your wired binary
+WIRED="@wireddir@/wired"
+
+# Flags to pass to wired
+WIREDFLAGS="-d @wireddir@"
+
+# Begin script
+PROG=$(basename $0)
+CMD=$1
+
+checkpid() {
+	RUNNING=0
+
+	if [ -f $PIDFILE ]; then
+		PID=`cat $PIDFILE`
+
+		if [ "x$PID" != "x" ]; then
+			if kill -0 $PID 2>/dev/null ; then
+				RUNNING=1
+			fi
+		fi
+	fi
+}
+
+checkrunning() {
+	checkpid
+
+	if [ $RUNNING -eq 0 ]; then
+		echo "$PROG: $CMD: wired is not running"
+		exit 1
+	fi
+}
+
+case $CMD in
+	start)
+		checkpid
+
+		if [ $RUNNING -eq 1 ]; then
+			echo "$PROG: $CMD: wired (pid $PID) already running"
+			exit 1
+		fi
+
+		if $WIRED $WIREDFLAGS; then
+			echo "$PROG: $CMD: wired started"
+		else
+			echo "$PROG: $CMD: wired could not be started"
+		fi
+		;;
+
+	stop)
+		checkrunning
+
+		if kill $PID; then
+			echo "$PROG: $CMD: wired stopped"
+		else
+			echo "$PROG: $CMD: wired could not be stopped"
+			exit 1
+		fi
+		;;
+
+	restart)
+		checkpid
+
+		if [ $RUNNING -eq 1 ]; then
+			if kill $PID; then
+				echo "$PROG: $CMD: wired stopped"
+			else
+				echo "$PROG: $CMD: wired could not be stopped"
+				exit 1
+			fi
+		fi
+
+		if $WIRED $WIREDFLAGS; then
+			echo "$PROG: $CMD: wired started"
+		else
+			echo "$PROG: $CMD: wired could not be started"
+		fi
+		;;
+
+	reload)
+		checkrunning
+
+		if kill -HUP $PID; then
+			echo "$PROG: $CMD: wired reloaded"
+		else
+			echo "$PROG: $CMD: wired could not be reloaded"
+		fi
+		;;
+
+	register)
+		checkrunning
+
+		if kill -USR1 $PID; then
+			echo "$PROG: $CMD: wired registering with trackers"
+		else
+			echo "$PROG: $CMD: wired could not register with trackers"
+		fi
+		;;
+
+	index)
+		checkrunning
+
+		if kill -USR2 $PID; then
+			echo "$PROG: $CMD: wired indexing"
+		else
+			echo "$PROG: $CMD: wired could not be indexed"
+		fi
+		;;
+
+	config)
+		grep -v "^#" $CONFIGFILE | grep -v "^$" | sort
+		;;
+
+	configtest)
+		$WIRED -t
+		;;
+	
+	debug)
+		echo "run -D $WIREDFLAGS" | gdb $WIRED
+		;;
+
+	status)
+		if [ -f $STATUSFILE ]; then
+			$WIRED -v
+			awk '
+				function pad(number) {
+					if(number < 10)
+						return "0" number
+					else
+						return number
+				}
+
+				function ftime(time) {
+					days = int(time / 86400)
+					time = time % 86400
+
+					hours = int(time / 3600)
+					time = time % 3600
+
+					minutes = int(time / 60)
+					time = time % 60
+
+					seconds = time
+
+					if(days > 0)
+						return pad(days) ":" pad(hours) ":" \
+							   pad(minutes) ":" pad(seconds) \
+							   " days"
+					else if(hours > 0)
+						return pad(hours) ":" pad(minutes) ":" \
+							   pad(seconds) " hours"
+					else if(minutes > 0)
+						return pad(minutes) ":" pad(seconds) \
+							   " minutes"
+					else
+						return seconds " seconds"
+				}
+
+				function fbytes(bytes) {
+					power = 0
+
+					while(bytes > (1024 ^ ++power))
+						;
+
+					value = sprintf("%.2f", bytes / (1024 ^ --power))
+
+					if(power == 4)
+						return value " TB"
+					else if(power == 3)
+						return value " GB"
+					else if(power == 2)
+						return value " MB"
+					else if(power == 1)
+						return value " KB"
+					else if(power == 0)
+						if(bytes == 1)
+							return bytes " byte"
+						else
+							return bytes " bytes"
+				}
+
+				{
+					"date +%s" | getline now
+					print "Up " ftime(now - $1)
+					print ""
+					print "Current users:              " $2
+					print "Total users:                " $3
+					print "Current downloads:          " $4
+					print "Total downloads:            " $5
+					print "Current uploads:            " $6
+					print "Total uploads:              " $7
+					print "Downloads traffic:          " fbytes($8)
+					print "Uploads traffic:            " fbytes($9)
+					print "Total traffic:              " fbytes($8 + $9)
+					print "Current tracker servers:    " $10
+					print "Current tracker users:      " $11
+					print "Current tracker files:      " $12
+					print "Current tracker size:       " fbytes($13)
+				}
+			' $STATUSFILE
+		else
+			echo "$PROG: $CMD: $STATUSFILE could not be found"
+		fi
+		;;
+
+	*)
+		cat <<EOF
+Usage: wiredctl [start | stop | restart | reload | index | register | config | configtest | debug | status | help]
+
+    start        start wired
+    stop         stop wired
+    restart      restart wired
+    reload       send wired a SIGHUP, causing it to reload its configuration
+    index        send wired a SIGUSR1, causing it to re-index the files
+    register     send wired a SIGUSR2, causing it to register with trackers
+    config       show the configuration
+    configtest   run a configuration syntax test
+    debug        start wired in the debugger
+    status       show a status screen
+    help         show this information
+
+By Axel Andersson <axel@zankasoftware.com>
+EOF
+		;;
+esac

@@ -1,0 +1,107 @@
+# wired.conf
+
+### SERVER ############################################################
+
+# Name of the server.
+# (default "Wired Server")
+name = Wired Server
+
+# A short description of the server.
+# (default "Wired Server")
+description = Wired Server
+
+# A specific address to bind to, instead of binding to all available
+# addresses. Can be specified more than once, for each address the
+# server should listen on.
+# (no default)
+#address = localhost
+
+# Port number to listen on.
+# (default 4871)
+port = 4871
+
+# Automatically map port using NAT-PMP or UPnP if available.
+# (default "no")
+map port = no
+
+# Name or id of the user that the server should operate as.
+# (default "@WD_USER@")
+user = @WD_USER@
+
+# Name or id of the group that the server should operate as.
+# (default "@WD_GROUP@")
+group = @WD_GROUP@
+
+
+### FILES #############################################################
+
+# Path to the files directory.
+# (default "files")
+files = files
+
+# If set, indexes files after this many seconds. Without it, no
+# automatic indexing takes place.
+# (default 14400)
+index time = 14400
+
+
+### TRANSFERS #########################################################
+
+# Maximum number of downloads across all clients.
+# (default 10)
+total downloads = 10
+
+# Maximum number of uploads across all clients.
+# (default 10)
+total uploads = 10
+
+# Maximum total speed of downloads in bytes/sec.
+# (no default)
+#total download speed = 100000
+
+# Maximum total speed of uploads in bytes/sec.
+# (no default)
+#total upload speed = 50000
+
+
+### TRACKERS ##########################################################
+
+# If set, registers with all configured trackers.
+# (default "no")
+register = no
+
+# A URL of a tracker to register with. The tracker is connected to at
+# startup, and then periodically informed with status updates. The
+# path of the URL is the category to register as. Can be specified more
+# than once, for each tracker that the server should register with.
+# (default "wired://wired.zankasoftware.com/")
+tracker = wired://wired.zankasoftware.com/
+
+# IP address to send to the tracker. If this is not set, the tracker
+# will automatically register the server as the originating IP address.
+# Set this to your external address if you're on the same subnet as the
+# tracker, and you're using private addresses behind a firewall.
+# (no default)
+#ip = 127.0.0.1
+
+# If set, enables the tracker.
+# (default "no")
+enable tracker = no
+
+# Categories that servers can register with on this tracker. Can be
+# specified more than once, for each category. Use "/" to separate
+# subcategories.
+# (no default)
+# category = Category
+# category = Category/Subcategory
+
+
+### PATHS #############################################################
+
+# Paths that do not begin with a / are taken to be relative the root
+# path (-d flag).
+
+# Path to an image file that will be sent to clients as the banner.
+# PNG file format is recommended. Maximum image size is 200x32 pixels.
+# (no default)
+banner = banner.png
