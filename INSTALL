@@ -3,14 +3,17 @@ PREREQUISITES
 
 To install the Wired server, you need the following prerequisites:
 
-    1. OpenSSL Library
-       http://www.openssl.org/source/
+	1. OpenSSL Library
+	http://www.openssl.org/source/
 	   
 	2. libxml2
-	   http://xmlsoft.org/
+	http://xmlsoft.org/
 	   
 	3. zlib
-	   http://zlib.net/
+	http://zlib.net/
+
+	4. git
+	http://git-scm.com/
 
 These are usually distributed with operating systems.
 
