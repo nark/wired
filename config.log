@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 4.00 gigabytes
-Default processor set: 97 tasks, 477 threads, 4 processors
-Load average: 2.00, Mach factor: 2.55
+Default processor set: 95 tasks, 472 threads, 4 processors
+Load average: 3.81, Mach factor: 1.57
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -125,7 +125,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0xf11e0b1
+| #define WI_REVISION 0x5554212
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -146,7 +146,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0xf11e0b1
+| #define WI_REVISION 0x5554212
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -357,7 +357,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0xf11e0b1
+| #define WI_REVISION 0x5554212
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -427,6 +427,7 @@ on nark-laptop.local
 
 config.status:613: creating Makefile
 config.status:613: creating config.h
+config.status:850: config.h is unchanged
 configure:9943: === configuring in libwired (/Users/nark/Development/Me/Cocoa/Wired/wired/wired/libwired)
 configure:10046: running /bin/sh ./configure '--prefix=/usr/local'  '--enable-pthreads' '--enable-libxml2' '--enable-sqlite3' '--enable-p7' '--with-rundir=../run/libwired' '--with-objdir=../obj' --cache-file=/dev/null --srcdir=.
 
@@ -580,7 +581,7 @@ wireddir='wired'
 #define PACKAGE_VERSION "2.0"
 #define PACKAGE_STRING "wired 2.0"
 #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-#define WI_REVISION 0xf11e0b1
+#define WI_REVISION 0x5554212
 #define WD_VERSION "2.0"
 #define WD_BUGREPORT "axel@zankasoftware.com"
 #define WD_USER "nark"

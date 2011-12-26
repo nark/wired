@@ -120,6 +120,8 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
 		return false;
 	}
 	
+    wi_p7_message_debug = true;
+    
 	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
 		event			= wi_dictionary_data_for_key(results, WI_STR("event"));
 		parameters		= wi_dictionary_data_for_key(results, WI_STR("parameters"));
@@ -129,9 +131,9 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
 		ip				= wi_dictionary_data_for_key(results, WI_STR("ip"));
 		
 		reply = wi_p7_message_with_name(WI_STR("wired.event.event_list"), wd_p7_spec);
-		
+		        
 		wi_p7_message_set_enum_name_for_name(reply, event, WI_STR("wired.event.event"));
-		wi_p7_message_set_date_for_name(reply, time, WI_STR("wired.event.time"));
+		wi_p7_message_set_date_for_name(reply, wi_date_with_sqlite3_string(time), WI_STR("wired.event.time"));
 		
 		if(parameters != wi_null())
 			wi_p7_message_set_list_for_name(reply, wi_string_components_separated_by_string(parameters, WI_STR("\34")), WI_STR("wired.event.parameters"));
@@ -153,6 +155,8 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
 	reply = wi_p7_message_with_name(WI_STR("wired.event.event_list.done"), wd_p7_spec);
 	wd_user_reply_message(user, reply, message);
 	
+    wi_p7_message_debug = false;
+    
 	return true;
 }
 

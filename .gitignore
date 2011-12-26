@@ -12,7 +12,7 @@ DerivedData/*
 profile
 
 # project related
-wired/libwired/*
-wired/obj/*
-wired/run/libwired/*
+libwired/*
+obj/*
+run/libwired/*
 *.o
