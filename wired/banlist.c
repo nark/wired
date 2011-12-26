@@ -120,7 +120,7 @@ void wd_banlist_reply_bans(wd_user_t *user, wi_p7_message_t *message) {
 		instance = wi_dictionary_data_for_key(results, WI_STR("expiration_date"));
 		
 		if(instance != wi_null())
-			wi_p7_message_set_date_for_name(reply, instance, WI_STR("wired.banlist.expiration_date"));
+			wi_p7_message_set_date_for_name(reply, wi_date_with_sqlite3_string(instance), WI_STR("wired.banlist.expiration_date"));
 		
 		wd_user_reply_message(user, reply, message);
 	}
@@ -137,11 +137,11 @@ void wd_banlist_reply_bans(wd_user_t *user, wi_p7_message_t *message) {
 }
 
 
-
 wi_boolean_t wd_banlist_add_ban(wi_string_t *ip, wi_date_t *expiration_date, wd_user_t *user, wi_p7_message_t *message) {
 	wi_dictionary_t		*results;
 	wi_string_t			*string;
 	
+    // check for negative expiration date
 	if(expiration_date && wi_date_time_interval(expiration_date) - wi_time_interval() < 1.0) {
 		wi_log_error(WI_STR("Could not add ban for \"%@\" expiring at %@: Negative expiration date"),
 			ip, wi_date_string_with_format(expiration_date, WI_STR("%Y-%m-%d %H:%M:%S")));
@@ -150,25 +150,29 @@ wi_boolean_t wd_banlist_add_ban(wi_string_t *ip, wi_date_t *expiration_date, wd_
 		return false;
 	}
 	
+    // check if an entry already exists for this IP address in the database
 	results = wi_sqlite3_execute_statement(wd_database, WI_STR("SELECT ip FROM banlist WHERE ip = ?"),
 										   ip,
 										   NULL);
-	
-	if(!results) {
+    
+	// prevents for database statement error
+    if(!results) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
 		wd_user_reply_internal_error(user, wi_error_string(), message);
-		
 		return false;
 	}
 	
+    // if an entry already exists, replay ban_exists error message and stop
 	if(wi_dictionary_count(results) > 0) {
 		wd_user_reply_error(user, WI_STR("wired.error.ban_exists"), message);
 		
 		return false;
 	}
 	
+    // check if the ban is limited in time or not
 	string = expiration_date ? wi_date_sqlite3_string(expiration_date) : NULL;
-	
+    
+    // finally add the new ban entry to the database
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("INSERT INTO banlist "
 														 "(ip, expiration_date) "
 														 "VALUES "

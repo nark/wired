@@ -1035,6 +1035,7 @@ static void wd_client_info_dealloc(wi_runtime_instance_t *instance) {
 
 	wi_release(client_info->application_name);
 	wi_release(client_info->application_version);
+    wi_release(client_info->application_build);
 	wi_release(client_info->os_name);
 	wi_release(client_info->os_version);
 	wi_release(client_info->arch);
