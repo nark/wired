@@ -57,49 +57,83 @@ wi_boolean_t wd_banlist_ip_is_banned(wi_string_t *ip, wi_date_t **expiration_dat
 	wi_sqlite3_statement_t		*statement;
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*instance;
-	wi_boolean_t                 ret;
+    wi_date_t                   *now;
+    wi_date_t                   *date;
+    wi_time_interval_t          interval;
+    wi_boolean_t                ret;
     
+    // delete expired ban item
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("DELETE FROM banlist "
 														 "WHERE strftime('%%s', 'now') - STRFTIME('%%s', expiration_date) > 0"),
 									 NULL)) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
 	}
-    
 	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT ip, expiration_date FROM banlist"), NULL);
-	
 	if(!statement) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
-		
 		return false;
 	}
 	
+    // check if the user IP exist in the database
+    // if yes, verify the expiration_date 
     ret = false;
     
 	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
-        
 		if(wi_ip_matches_string(wi_dictionary_data_for_key(results, WI_STR("ip")), ip)) {
             
-			instance = wi_dictionary_data_for_key(results, WI_STR("expiration_date"));
-			
-			if(instance == wi_null())
-				*expiration_date = NULL;
-			else {
-                wi_date_t *date = wi_date_with_sqlite3_string(instance);
-				*expiration_date = date;
-			}
-			ret =  true;
+			instance    = wi_dictionary_data_for_key(results, WI_STR("expiration_date"));
+            date        = wi_date_with_sqlite3_string(instance);
+            
+            if(wi_date_valid_expiration_date(date)) {
+                *expiration_date = date;
+                ret = true;
+            } else {
+                *expiration_date = NULL;
+                ret = false;
+            }
+            
+//			if(instance == wi_null()) {
+//				*expiration_date = NULL;
+//                ret = true;
+//                
+//            } else {
+//                
+//                
+//                now         = wi_date();
+//                date        = wi_date_with_sqlite3_string(instance);
+//                interval    = wi_date_time_interval_since_date(now, date);
+//                
+//                if()
+//                
+//                wi_log_info(WI_STR("interval: %f"), interval);
+//                
+//                // expiration date is valid
+//                if(interval > 0) {
+//                    *expiration_date = date;
+//                    ret = true;
+//                    
+//                // expiration date is unvalid
+//                } else {
+//                    // banlist entry is useless so, delete it
+//                    if(!wi_sqlite3_execute_statement(wd_database, WI_STR("DELETE FROM banlist WHERE ip = ?"), ip, NULL)) {
+//                        wi_log_error(WI_STR("Could not execute database statement: %m"));
+//                    }
+//                    
+//                    *expiration_date = NULL;
+//                    ret = false;
+//                }
+//			}
             continue;
 		}
+	}
+	
+	if(!results) {
+		wi_log_error(WI_STR("Could not execute database statement: %m"));
+		return false;
 	}
     
     if(ret)
         return ret;
-	
-	if(!results) {
-		wi_log_error(WI_STR("Could not execute database statement: %m"));
-		
-		return false;
-	}
 
 	return false;
 }
