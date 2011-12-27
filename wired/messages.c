@@ -419,20 +419,37 @@ static void wd_message_send_login(wd_user_t *user, wi_p7_message_t *message) {
 	
 	wd_user_set_login(user, login);
 	
+    // check banlist (ip + expiration date)
 	if(wd_banlist_ip_is_banned(wd_user_ip(user), &expiration_date)) {
+        wi_boolean_t is_banned = true;
+        
+        // make a new reply message for use if banned
 		reply = wi_p7_message_with_name(WI_STR("wired.banned"), wd_p7_spec);
-		
-		if(expiration_date)
-			wi_p7_message_set_date_for_name(reply, expiration_date, WI_STR("wired.banlist.expiration_date"));
-		
-		wd_user_reply_message(user, reply, message);
-		
-		wi_log_info(WI_STR("Login from %@ failed: Banned"),
-			wd_user_identifier(user));
-		
-		wd_events_add_event(WI_STR("wired.event.user.login_failed"), user, NULL);
-		
-		return;
+        
+        // check if we have an expiration date
+		if(expiration_date) {
+            // check time interval from now to the expiration date
+            wi_date_t *now = wi_date();
+            wi_time_interval_t interval = wi_date_time_interval_since_date(expiration_date, now);
+            // if the expiration date is still valid
+            if(interval < 0) {
+                // we add the date to the reply message
+                wi_p7_message_set_date_for_name(reply, expiration_date, WI_STR("wired.banlist.expiration_date"));
+            } else {
+                // if the expiration date is unvalid, undo reply
+                is_banned = false;
+            }
+        }
+        
+        // if banned and not canceled, send reply and stop login
+        if(is_banned) {
+            wd_user_reply_message(user, reply, message);
+            wi_log_info(WI_STR("Login from %@ failed: Banned"),
+                        wd_user_identifier(user));
+            wd_events_add_event(WI_STR("wired.event.user.login_failed"), user, NULL);
+            
+            return;
+        }
 	}
 	
 	account = wd_accounts_read_user_and_group(login);

@@ -57,13 +57,14 @@ wi_boolean_t wd_banlist_ip_is_banned(wi_string_t *ip, wi_date_t **expiration_dat
 	wi_sqlite3_statement_t		*statement;
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*instance;
-	
+	wi_boolean_t                 ret;
+    
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("DELETE FROM banlist "
 														 "WHERE strftime('%%s', 'now') - STRFTIME('%%s', expiration_date) > 0"),
 									 NULL)) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
 	}
-	
+    
 	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT ip, expiration_date FROM banlist"), NULL);
 	
 	if(!statement) {
@@ -72,18 +73,27 @@ wi_boolean_t wd_banlist_ip_is_banned(wi_string_t *ip, wi_date_t **expiration_dat
 		return false;
 	}
 	
+    ret = false;
+    
 	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
+        
 		if(wi_ip_matches_string(wi_dictionary_data_for_key(results, WI_STR("ip")), ip)) {
+            
 			instance = wi_dictionary_data_for_key(results, WI_STR("expiration_date"));
 			
 			if(instance == wi_null())
 				*expiration_date = NULL;
-			else
-				*expiration_date = wi_date_with_sqlite3_string(instance);
-			
-			return true;
+			else {
+                wi_date_t *date = wi_date_with_sqlite3_string(instance);
+				*expiration_date = date;
+			}
+			ret =  true;
+            continue;
 		}
 	}
+    
+    if(ret)
+        return ret;
 	
 	if(!results) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
@@ -103,8 +113,8 @@ void wd_banlist_reply_bans(wd_user_t *user, wi_p7_message_t *message) {
 	wi_p7_message_t				*reply;
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*instance;
-	
-	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT ip, expiration_date FROM banlist"), NULL);
+    	
+    statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT ip, expiration_date FROM banlist"), NULL);
 	
 	if(!statement) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
