@@ -30,17 +30,19 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 4.00 gigabytes
-Default processor set: 103 tasks, 516 threads, 4 processors
-Load average: 4.75, Mach factor: 1.23
+Default processor set: 98 tasks, 472 threads, 4 processors
+Load average: 0.72, Mach factor: 3.27
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /Developer/usr/bin
 PATH: /usr/bin
 PATH: /bin
 PATH: /usr/sbin
 PATH: /sbin
+PATH: /usr/local/bin
+PATH: /usr/X11/bin
+PATH: /Users/nark/.rvm/bin
 
 
 ## ----------- ##
@@ -52,7 +54,7 @@ configure:1882: result: i686-apple-darwin11.2.0
 configure:1904: checking host system type
 configure:1919: result: i686-apple-darwin11.2.0
 configure:2029: checking for gcc
-configure:2045: found /Developer/usr/bin/gcc
+configure:2045: found /usr/bin/gcc
 configure:2056: result: gcc
 configure:2294: checking for C compiler version
 configure:2301: gcc --version >&5
@@ -125,7 +127,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x0e71865
+| #define WI_REVISION 0xe7ce035
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -146,7 +148,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x0e71865
+| #define WI_REVISION 0xe7ce035
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -357,7 +359,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x0e71865
+| #define WI_REVISION 0xe7ce035
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -506,8 +508,7 @@ CFLAGS='-g -O2'
 CPP='gcc -E'
 CPPFLAGS='-DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7'
 DEFS='-DHAVE_CONFIG_H'
-ECHO_C=''
-ECHO_N='-n'
+ECHO_C='ECHO_N=''
 ECHO_T=''
 EGREP='/usr/bin/grep -E'
 EXEEXT=''
@@ -581,7 +582,7 @@ wireddir='wired'
 #define PACKAGE_VERSION "2.0"
 #define PACKAGE_STRING "wired 2.0"
 #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-#define WI_REVISION 0x0e71865
+#define WI_REVISION 0xe7ce035
 #define WD_VERSION "2.0"
 #define WD_BUGREPORT "axel@zankasoftware.com"
 #define WD_USER "nark"
