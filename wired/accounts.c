@@ -26,6 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #include "config.h"
 
 #include <stddef.h>
@@ -93,7 +94,8 @@ static wi_boolean_t									wd_accounts_convert_accounts_from_2_0b2(wi_string_t 
 static void											wd_accounts_reload_user_account(wd_account_t *);
 static void											wd_accounts_reload_group_account(wd_account_t *);
 static void											wd_accounts_reload_account(wd_user_t *, wi_string_t *);
-static wi_boolean_t									wd_accounts_rename_group(wi_string_t *, wi_string_t *);
+static wi_boolean_t									wd_accounts_rename_group(wi_string_t *oldname, wi_string_t *newname);
+
 static void											wd_accounts_notify_subscribers(void);
 
 static wd_account_t *								wd_account_init(wd_account_t *);
@@ -742,12 +744,12 @@ wi_boolean_t wd_accounts_edit_user(wd_account_t *account, wd_user_t *user, wi_p7
 	
 	name = wi_autorelease(wi_retain(wd_account_name(account)));
 	
-	if(wd_account_new_name(account) && !wi_is_equal(name, wd_account_new_name(account)))
+	if(wd_account_new_name(account))
 		newname = wd_account_new_name(account);
 	else
 		newname = NULL;
 	
-	if(newname)
+	if(newname && wi_string_length(newname) > 0 && !wi_is_equal(name, newname))
 		wi_mutable_dictionary_set_data_for_key(account->values, newname, WI_STR("wired.account.name"));
 	
 	wi_mutable_dictionary_set_data_for_key(account->values, wi_date(), WI_STR("wired.account.modification_time"));
@@ -785,40 +787,33 @@ wi_boolean_t wd_accounts_edit_user(wd_account_t *account, wd_user_t *user, wi_p7
 
 wi_boolean_t wd_accounts_edit_group(wd_account_t *account, wd_user_t *user, wi_p7_message_t *message) {
 	wi_string_t			*name, *newname, *string;
-	wi_boolean_t		commit;
-	
+	wi_boolean_t		has_new_name, commit;
+	wi_dictionary_t     *results;
+    
 	name = wi_autorelease(wi_retain(wd_account_name(account)));
 	
-	if(wd_account_new_name(account) && !wi_is_equal(name, wd_account_new_name(account)))
+	if(wd_account_new_name(account))
 		newname = wd_account_new_name(account);
 	else
 		newname = NULL;
 	
-	if(newname)
+    has_new_name = (newname && wi_string_length(newname) > 0 && !wi_is_equal(name, newname));
+    
+	if(has_new_name)
 		wi_mutable_dictionary_set_data_for_key(account->values, newname, WI_STR("wired.account.name"));
 	
 	wi_mutable_dictionary_set_data_for_key(account->values, wi_date(), WI_STR("wired.account.modification_time"));
 	wi_mutable_dictionary_set_data_for_key(account->values, wd_user_nick(user), WI_STR("wired.account.edited_by"));
-	
-	wi_sqlite3_begin_immediate_transaction(wd_database);
-	
+		
 	string = wd_account_sqlite3_update_string(account, WD_ACCOUNT_FIELD_GROUP);
-	
-	if(wi_sqlite3_execute_statement(wd_database, wi_string_with_format(WI_STR("UPDATE groups SET %@ WHERE name = ?"), string),
-									name,
-									NULL)) {
-		if(newname)
-			commit = wd_accounts_rename_group(name, newname);
-		else
-			commit = true;
-	} else {
-		commit = false;
-	}
-	
-	if(commit) {
-		wi_sqlite3_commit_transaction(wd_database);
-
-		if(newname) {
+    
+    
+	if(wi_sqlite3_execute_statement(wd_database, wi_string_with_format(WI_STR("UPDATE groups SET %@ WHERE name = ?"), string), name, NULL)) {
+        
+        if(has_new_name) {
+            
+            wd_accounts_rename_group(name, newname);
+            
 			wd_boards_renamed_group(name, newname);
 			wd_accounts_notify_subscribers();
 		}
@@ -826,14 +821,13 @@ wi_boolean_t wd_accounts_edit_group(wd_account_t *account, wd_user_t *user, wi_p
 		wd_accounts_reload_group_account(account);
 		
 		return true;
-	} else {
-		wi_sqlite3_rollback_transaction(wd_database);
+    } else {
 		
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
 		wd_user_reply_internal_error(user, wi_error_string(), message);
 		
-		return false;
-	}
+		return false;   
+    }
 }
 
 
@@ -1126,6 +1120,7 @@ static void wd_accounts_create_tables(void) {
 				wi_log_fatal(WI_STR("Could not execute database statement: %m"));
 			}
             
+            // delete group trigger: updates owned users when a group is deleted
             if(!wi_sqlite3_execute_statement(wd_database, WI_STR("CREATE TRIGGER groups_delete_trigger "
                                                                  "BEFORE DELETE ON groups "
                                                                  "FOR EACH ROW BEGIN "
@@ -1258,15 +1253,6 @@ static void wd_accounts_create_default_accounts(void) {
 									 NULL)) {
 		wi_log_fatal(WI_STR("Could not execute database statement: %m"));
 	}
-    
-    if(!wi_sqlite3_execute_statement(wd_database, WI_STR("CREATE TRIGGER groups_delete_trigger "
-                                                         "AFTER DELETE ON `groups` "
-                                                         "FOR EACH ROW BEGIN "
-                                                         "UPDATE users SET `group`='' WHERE `group` = `OLD.group`; "
-                                                         "END"),
-                                     NULL)) {
-        wi_log_fatal(WI_STR("Could not execute database statement: %m"));
-    }
 }
 
 
@@ -1741,38 +1727,44 @@ static wi_boolean_t wd_accounts_rename_group(wi_string_t *name, wi_string_t *new
 	wi_uinteger_t				index;
 	
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE users SET `group` = ? WHERE `group` = ?"),
-									 newname ? newname : wi_null(),
+									 (newname && wi_string_length(newname) > 0) ? newname: wi_null(),
 									 name,
 									 NULL)) {
 		return false;
 	}
-	
-	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT name, `groups` FROM users"), NULL);
-	
+        
+	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT `name`, `groups` FROM `users`"), NULL);
+	    
 	if(!statement)
 		return false;
-	
+	    
+    
 	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
-		groups		= wi_string_components_separated_by_string(wi_dictionary_data_for_key(results, WI_STR("groups")), WI_STR("\34"));
-		index		= wi_array_index_of_data(groups, name);
-		
-		if(index != WI_NOT_FOUND) {
-			newgroups = wi_autorelease(wi_mutable_copy(groups));
-			
-			if(newname)
-				wi_mutable_array_replace_data_at_index(newgroups, newname, index);
-			else
-				wi_mutable_array_remove_data_at_index(newgroups, index);
-			
-			if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE users SET groups = ? WHERE name = ?"),
-											 wi_array_components_joined_by_string(newgroups, WI_STR("\34")),
-											 wi_dictionary_data_for_key(results, WI_STR("name")),
-											 NULL)) {
-				return false;
-			}
-		}
+        wi_string_t *result;
+        result = wi_dictionary_data_for_key(results, WI_STR("groups"));
+        
+        if(result != wi_null()) {
+            groups		= wi_string_components_separated_by_string(result, WI_STR("\34"));
+            index		= wi_array_index_of_data(groups, name);
+            
+            if(index != WI_NOT_FOUND) {
+                
+                newgroups = wi_autorelease(wi_mutable_copy(groups));
+                
+                if(newname)
+                    wi_mutable_array_replace_data_at_index(newgroups, newname, index);
+                else
+                    wi_mutable_array_remove_data_at_index(newgroups, index);
+                
+                if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE users SET groups = ? WHERE name = ?"),
+                                                 wi_array_components_joined_by_string(newgroups, WI_STR("\34")),
+                                                 wi_dictionary_data_for_key(results, WI_STR("name")),
+                                                 NULL)) {
+                    return false;
+                }
+            }
+        }
 	}
-	
 	return true;
 }
 
@@ -2082,9 +2074,9 @@ static wi_string_t * wd_account_sqlite3_update_string(wd_account_t *account, wi_
 						break;
 						
 					case WD_ACCOUNT_FIELD_NUMBER:
-					case WD_ACCOUNT_FIELD_BOOLEAN:
-						wi_mutable_string_append_format(string, WI_STR("%u"), wi_number_integer(value));
-						break;
+					case WD_ACCOUNT_FIELD_BOOLEAN: 
+                        wi_mutable_string_append_format(string, WI_STR("%u"), wi_number_integer(value));
+                        break;
 						
 					case WD_ACCOUNT_FIELD_LIST:
 						wi_mutable_string_append_format(string, WI_STR("'%q'"), wi_array_components_joined_by_string(value, WI_STR("\34")));
@@ -2240,10 +2232,6 @@ static void wd_account_write_to_message(wd_account_t *account, wi_uinteger_t acc
 
 
 static void wd_account_override_privileges(wd_account_t *account1, wd_account_t *account2) {
-/*  
- * It appears that this piece of code is broken and useless
- ***
- 
 	wi_enumerator_t			*enumerator;
 	wi_dictionary_t			*field;
 	wi_string_t				*field_name;
@@ -2260,16 +2248,23 @@ static void wd_account_override_privileges(wd_account_t *account1, wd_account_t 
 		   wi_is_equal(field_name, WI_STR("wired.account.color"))) {
             
 			value = wi_dictionary_data_for_key(account1->values, field_name);
-			
+                     
+            // need works here
 			if(!value) {
 				value = wi_dictionary_data_for_key(account2->values, field_name);
 				
 				if(value)
 					wi_mutable_dictionary_set_data_for_key(account1->values, value, field_name);
-			}
+                
+			} else if(value && wi_number_bool(value) == false) {                
+                value = wi_dictionary_data_for_key(account2->values, field_name);
+                        
+				if(value)
+					wi_mutable_dictionary_set_data_for_key(account1->values, value, field_name);
+                
+            }
 		}
 	}
- */
 }
 
 

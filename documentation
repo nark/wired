@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# change this regarding to your doxygen installation (here is Mac OSX)
+DOXYGEN_BIN="/Volumes/Doxygen/Doxygen.app/Contents/Resources/doxygen"
+
+for doxy_config_file in `find . -name *.doxyfile` 
+do
+# generate doxygen HTML output for any config file with doxyfile extention in subdirectories
+$DOXYGEN_BIN $doxy_config_file
+# 
+done 

@@ -26,15 +26,31 @@
  * POSSIBILITY OF SUCH DAMAGE_
  */
 
+
+/**
+ * @file accounts.h
+ * @brief Server accounts
+ * @author Axel Andersson, Rafaël Warnault
+ * @version 2.0
+ * @date 2011/12/30
+ *
+ * Manage server accounts (users and groups) and sqlite persistence.
+ *
+ */
+
 #ifndef WD_ACCOUNTS_H
 #define WD_ACCOUNTS_H 1
 
 #include <wired/wired.h>
 #include "main.h"
 
+
 typedef struct _wd_account			wd_account_t;
 
-
+/**
+ * @fn void wd_accounts_initialize(void)
+ * @brief Initialize server accounts array and dictionaries
+ */
 void								wd_accounts_initialize(void);
 
 wd_account_t *						wd_accounts_read_user_and_group(wi_string_t *);
