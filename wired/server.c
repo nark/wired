@@ -55,7 +55,7 @@
 #include "trackers.h"
 #include "transfers.h"
 
-#define WD_SERVER_PING_INTERVAL		60.0
+#define WD_SERVER_PING_INTERVAL		30.0
 
 #ifdef HAVE_CORESERVICES_CORESERVICES_H
 static void							wd_server_cf_thread(wi_runtime_instance_t *);

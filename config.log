@@ -30,12 +30,13 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 4.00 gigabytes
-Default processor set: 91 tasks, 442 threads, 4 processors
-Load average: 1.85, Mach factor: 2.14
+Default processor set: 99 tasks, 480 threads, 4 processors
+Load average: 3.02, Mach factor: 1.90
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
+PATH: /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin
 PATH: /Developer/usr/bin
 PATH: /usr/bin
 PATH: /bin
@@ -52,11 +53,11 @@ configure:1882: result: i686-apple-darwin11.2.0
 configure:1904: checking host system type
 configure:1919: result: i686-apple-darwin11.2.0
 configure:2029: checking for gcc
-configure:2045: found /Developer/usr/bin/gcc
+configure:2045: found /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc
 configure:2056: result: gcc
 configure:2294: checking for C compiler version
 configure:2301: gcc --version >&5
-i686-apple-darwin11-llvm-gcc-4.2 (GCC) 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2336.1.00)
+i686-apple-darwin10-llvm-gcc-4.2 (GCC) 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2377.00)
 Copyright (C) 2007 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -64,10 +65,10 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 configure:2304: $? = 0
 configure:2311: gcc -v >&5
 Using built-in specs.
-Target: i686-apple-darwin11
-Configured with: /private/var/tmp/llvmgcc42/llvmgcc42-2336.1~1/src/configure --disable-checking --enable-werror --prefix=/Developer/usr/llvm-gcc-4.2 --mandir=/share/man --enable-languages=c,objc,c++,obj-c++ --program-prefix=llvm- --program-transform-name=/^[cg][^.-]*$/s/$/-4.2/ --with-slibdir=/usr/lib --build=i686-apple-darwin11 --enable-llvm=/private/var/tmp/llvmgcc42/llvmgcc42-2336.1~1/dst-llvmCore/Developer/usr/local --program-prefix=i686-apple-darwin11- --host=x86_64-apple-darwin11 --target=i686-apple-darwin11 --with-gxx-include-dir=/usr/include/c++/4.2.1
+Target: i686-apple-darwin10
+Configured with: /private/var/tmp/llvmgcc42_Embedded/llvmgcc42_Embedded-2377~4/src/configure --enable-checking --enable-werror --prefix=/Developer/usr/llvm-gcc-4.2 --mandir=/share/man --enable-languages=c,objc,c++,obj-c++ --program-prefix=llvm- --program-transform-name=/^[cg][^.-]*$/s/$/-4.2/ --with-slibdir=/usr/lib --build=i686-apple-darwin10 --enable-llvm=/private/var/tmp/llvmgcc42_Embedded/llvmgcc42_Embedded-2377~4/dst-llvmCore/Developer/usr/local --program-prefix=i686-apple-darwin10- --host=x86_64-apple-darwin10 --target=i686-apple-darwin10 --with-gxx-include-dir=/usr/include/c++/4.2.1
 Thread model: posix
-gcc version 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2336.1.00)
+gcc version 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2377.00)
 configure:2314: $? = 0
 configure:2321: gcc -V >&5
 llvm-gcc-4.2: argument to `-V' is missing
@@ -125,7 +126,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x6510cfd
+| #define WI_REVISION 0xac9ac6e
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -146,7 +147,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x6510cfd
+| #define WI_REVISION 0xac9ac6e
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -357,7 +358,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x6510cfd
+| #define WI_REVISION 0xac9ac6e
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -581,7 +582,7 @@ wireddir='wired'
 #define PACKAGE_VERSION "2.0"
 #define PACKAGE_STRING "wired 2.0"
 #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-#define WI_REVISION 0x6510cfd
+#define WI_REVISION 0xac9ac6e
 #define WD_VERSION "2.0"
 #define WD_BUGREPORT "axel@zankasoftware.com"
 #define WD_USER "nark"
