@@ -613,6 +613,8 @@ wd_account_t * wd_accounts_read_user_and_group(wi_string_t *name) {
 		if(groupaccount)
 			wd_account_override_privileges(useraccount, groupaccount);
 	}
+
+    //wi_log_info(WI_STR("useraccount: %@"), wi_dictionary_data_for_key(useraccount->values, WI_STR("wired.account.name")));
 	
 	return useraccount;
 }
@@ -2238,23 +2240,23 @@ static void wd_account_override_privileges(wd_account_t *account1, wd_account_t 
 	wi_runtime_instance_t	*value;
 
 	enumerator = wi_dictionary_key_enumerator(wd_account_fields_by_protocol_name);
-	
-	while((field_name = wi_enumerator_next_data(enumerator))) {
+    
+    while((field_name = wi_enumerator_next_data(enumerator))) {
 
 		field = wi_dictionary_data_for_key(wd_account_fields_by_protocol_name, field_name);
 		
-		if(wi_number_int32(wi_dictionary_data_for_key(field, WI_STR(WD_ACCOUNT_FIELD_ACCOUNT))) & WD_ACCOUNT_FIELD_PRIVILEGE ||
+		if(!wi_is_equal(WI_STR("wired.account.name"), field_name) &&
+           wi_number_int32(wi_dictionary_data_for_key(field, WI_STR(WD_ACCOUNT_FIELD_ACCOUNT))) & WD_ACCOUNT_FIELD_PRIVILEGE ||
 		   wi_is_equal(field_name, WI_STR("wired.account.files")) ||
 		   wi_is_equal(field_name, WI_STR("wired.account.color"))) {
             
 			value = wi_dictionary_data_for_key(account1->values, field_name);
                      
-            // need works here
 			if(!value) {
 				value = wi_dictionary_data_for_key(account2->values, field_name);
 				
 				if(value)
-					wi_mutable_dictionary_set_data_for_key(account1->values, value, field_name);
+                    wi_mutable_dictionary_set_data_for_key(account1->values, value, field_name);
                 
 			} else if(value && wi_number_bool(value) == false) {                
                 value = wi_dictionary_data_for_key(account2->values, field_name);

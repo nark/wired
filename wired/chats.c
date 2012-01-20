@@ -106,8 +106,10 @@ static wi_runtime_class_t			wd_topic_runtime_class = {
 
 
 void wd_chats_initialize(void) {
-	wi_dictionary_t		*results;
-	
+	wi_dictionary_t         *results;
+	wi_runtime_instance_t   *instance;
+    wi_date_t               *date;
+    
 	wd_chats_create_tables();
 	
 	wi_fs_delete_path(WI_STR("topic"));
@@ -125,15 +127,20 @@ void wd_chats_initialize(void) {
 	wd_chats_add_chat(wd_public_chat);
 	
 	results = wi_sqlite3_execute_statement(wd_database, WI_STR("SELECT topic, time, nick, login, ip FROM topic"), NULL);
-	
+    
 	if(results) {
 		if(wi_dictionary_count(results) > 0) {
-			wd_public_chat->topic = wd_topic_init_with_string(wd_topic_alloc(),
-				wi_dictionary_data_for_key(results, WI_STR("topic")),
-				wi_dictionary_data_for_key(results, WI_STR("time")),
-				wi_dictionary_data_for_key(results, WI_STR("nick")),
-				wi_dictionary_data_for_key(results, WI_STR("login")),
-				wi_dictionary_data_for_key(results, WI_STR("ip")));
+            
+            instance = wi_dictionary_data_for_key(results, WI_STR("time"));
+            if(instance) 
+                date = wi_date_with_sqlite3_string(instance);
+        
+            wd_public_chat->topic = wd_topic_init_with_string(wd_topic_alloc(),
+                                                              wi_dictionary_data_for_key(results, WI_STR("topic")),
+                                                              date,
+                                                              wi_dictionary_data_for_key(results, WI_STR("nick")),
+                                                              wi_dictionary_data_for_key(results, WI_STR("login")),
+                                                              wi_dictionary_data_for_key(results, WI_STR("ip")));
 		}
 	} else {
 		wi_log_fatal(WI_STR("Could not execute database statement: %m"));

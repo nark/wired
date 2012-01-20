@@ -135,7 +135,6 @@ static void							wd_message_tracker_get_servers(wd_user_t *, wi_p7_message_t *)
 static void							wd_message_tracker_send_register(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_tracker_send_update(wd_user_t *, wi_p7_message_t *);
 
-
 static wi_mutable_dictionary_t		*wd_message_handlers;
 
 
@@ -1306,7 +1305,7 @@ static void wd_message_board_delete_board(wd_user_t *user, wi_p7_message_t *mess
 
 static void wd_message_board_get_board_info(wd_user_t *user, wi_p7_message_t *message) {
 	wi_string_t		*board;
-	
+	    
 	if(!wd_account_board_get_board_info(wd_user_account(user))) {
 		wd_user_reply_error(user, WI_STR("wired.error.permission_denied"), message);
 		
@@ -3150,3 +3149,4 @@ static void wd_message_tracker_send_update(wd_user_t *user, wi_p7_message_t *mes
 	if(wd_servers_update_server(wd_user_ip(user), user, message))
 		wd_user_reply_okay(user, message);
 }
+

@@ -511,6 +511,16 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 		
 		return false;
 	}
+    
+    if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
+									 newboard,
+									 oldboard,
+									 NULL)) {
+		wi_log_error(WI_STR("Could not execute database statement: %m"));
+		wd_user_reply_internal_error(user, wi_error_string(), message);
+		
+		return false;
+	}
 	
 	privileges = wd_boards_privileges_for_board(newboard);
 	
@@ -620,7 +630,7 @@ wi_boolean_t wd_boards_delete_board(wi_string_t *board, wd_user_t *user, wi_p7_m
 wi_boolean_t wd_boards_get_board_info(wi_string_t *board, wd_user_t *user, wi_p7_message_t *message) {
 	wi_p7_message_t			*reply;
 	wd_board_privileges_t	*privileges;
-	
+	    
 	privileges = wd_boards_privileges_for_board(board);
 	
 	reply = wi_p7_message_with_name(WI_STR("wired.board.board_info"), wd_p7_spec);
@@ -900,7 +910,7 @@ wi_boolean_t wd_boards_edit_thread(wi_uuid_t *thread, wi_string_t *subject, wi_s
 		}
 	}
 	
-	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET subject = ?, `text` = ?, edit_date = ? "
+	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET subject =  ?, `text` = ?, edit_date = ? "
 														 "WHERE thread = ?"),
 									 subject,
 									 text,

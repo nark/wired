@@ -3,7 +3,7 @@
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			 xsi:schemaLocation="http://www.zankasoftware.com/P7/Specification p7-specification.xsd"
 			 name="Wired"
-			 version="2.0b54">
+			 version="2.0b55">
 	<p7:documentation>
 		TBD
 		
@@ -2016,14 +2016,6 @@
 			</p7:documentation>
 			<p7:parameter field="wired.transaction" version="2.0" />
 			<p7:parameter field="wired.board.board" use="required" version="2.0" />
-			<p7:parameter field="wired.board.owner" use="required" version="2.0" />
-			<p7:parameter field="wired.board.owner.read" use="required" version="2.0" />
-			<p7:parameter field="wired.board.owner.write" use="required" version="2.0" />
-			<p7:parameter field="wired.board.group" use="required" version="2.0" />
-			<p7:parameter field="wired.board.group.read" use="required" version="2.0" />
-			<p7:parameter field="wired.board.group.write" use="required" version="2.0" />
-			<p7:parameter field="wired.board.everyone.read" use="required" version="2.0" />
-			<p7:parameter field="wired.board.everyone.write" use="required" version="2.0" />
 		</p7:message>
 
 		<p7:message name="wired.board.board_info" id="6019" version="2.0">
@@ -3112,6 +3104,7 @@
 			<p7:parameter field="wired.info.files.count" use="required" version="2.0" />
 			<p7:parameter field="wired.info.files.size" use="required" version="2.0" />
 		</p7:message>
+        
 	</p7:messages>
 
 	<p7:transactions>
@@ -4898,6 +4891,7 @@
 				<p7:reply message="wired.error" count="1" use="required" version="2.0" />
 			</p7:or>
 		</p7:transaction>
+     
 	</p7:transactions>
 	
 	<p7:broadcasts>
@@ -5068,5 +5062,6 @@
 				TBD
 			</p7:documentation>
 		</p7:broadcast>
+        
 	</p7:broadcasts>
 </p7:protocol>
