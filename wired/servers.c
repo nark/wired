@@ -418,8 +418,24 @@ void wd_servers_reply_server_list(wd_user_t *user, wi_p7_message_t *message) {
 	wd_user_reply_message(user, reply, message);
 }
 
-
-
+/*
+void wd_servers_broadcast_message(wd_user_t *user, wi_p7_message_t *message) {
+    wi_enumerator_t		*enumerator;
+	wd_server_t			*server;
+	
+	wi_dictionary_rdlock(wd_servers);
+	
+	enumerator = wi_dictionary_data_enumerator(wd_servers);
+	
+	while((server = wi_enumerator_next_data(enumerator))) {
+		if(server->active) {
+            wd_user_send_message(user, message);
+        }
+    }
+    
+    wi_dictionary_unlock(wd_servers);
+}
+*/
 
 
 #pragma mark -

@@ -1316,7 +1316,6 @@ static void wd_message_board_get_board_info(wd_user_t *user, wi_p7_message_t *me
 	
 	if(!wd_boards_has_board_with_name(board)) {
 		wd_user_reply_error(user, WI_STR("wired.error.board_not_found"), message);
-		
 		return;
 	}
 	

@@ -531,8 +531,8 @@ s,@host_os@,|#_!!_#|darwin11.2.0,g
 s,@WD_VERSION@,|#_!!_#|2.0,g
 s,@CC@,|#_!!_#|gcc,g
 s,@CFLAGS@,|#_!!_#|-g -O2,g
-s,@LDFLAGS@,|#_!!_#|,g
-s,@CPPFLAGS@,|#_!!_#|-DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7,g
+s,@LDFLAGS@,|#_!!_#|-L/usr/local/lib,g
+s,@CPPFLAGS@,|#_!!_#|-I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7,g
 s,@ac_ct_CC@,|#_!!_#|gcc,g
 s,@EXEEXT@,|#_!!_#|,g
 s,@OBJEXT@,|#_!!_#|o,g
@@ -809,7 +809,7 @@ s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_TARNAME\)[	 (].*,\1define\2 "wired" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_VERSION\)[	 (].*,\1define\2 "2.0" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_STRING\)[	 (].*,\1define\2 "wired 2.0" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_BUGREPORT\)[	 (].*,\1define\2 "axel@zankasoftware.com" ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*WI_REVISION\)[	 (].*,\1define\2 0x25b38a2 ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*WI_REVISION\)[	 (].*,\1define\2 0x792793f ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_VERSION\)[	 (].*,\1define\2 "2.0" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_BUGREPORT\)[	 (].*,\1define\2 "axel@zankasoftware.com" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_USER\)[	 (].*,\1define\2 "nark" ,

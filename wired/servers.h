@@ -44,6 +44,8 @@ wi_boolean_t						wd_servers_update_server(wi_string_t *, wd_user_t *, wi_p7_mes
 void								wd_servers_reply_categories(wd_user_t *, wi_p7_message_t *);
 void								wd_servers_reply_server_list(wd_user_t *, wi_p7_message_t *);
 
+// void								wd_servers_broadcast_message(wd_user_t *, wi_p7_message_t *);
+
 wi_boolean_t						wd_server_is_active(wd_server_t *);
 wi_cipher_t *						wd_server_cipher(wd_server_t *);
 wi_uinteger_t						wd_server_port(wd_server_t *);

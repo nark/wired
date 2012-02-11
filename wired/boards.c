@@ -470,6 +470,7 @@ wi_boolean_t wd_boards_add_board(wi_string_t *board, wd_user_t *user, wi_p7_mess
 		return false;
 	}
 	
+    // broadcast board added to clients
 	wi_dictionary_rdlock(wd_users);
 
 	enumerator = wi_dictionary_data_enumerator(wd_users);
@@ -490,6 +491,8 @@ wi_boolean_t wd_boards_add_board(wi_string_t *board, wd_user_t *user, wi_p7_mess
 	}
 	
 	wi_dictionary_unlock(wd_users);
+    
+    // broadcast board added to tracker if it's a shared board
 	
 	return true;
 }
@@ -552,7 +555,10 @@ wi_boolean_t wd_boards_move_board(wi_string_t *oldboard, wi_string_t *newboard, 
 	wi_p7_message_t			*broadcast;
 	wd_user_t				*peer;
 	wd_board_privileges_t	*privileges;
-	
+    
+    wi_log_info(WI_STR("%@"), wi_p7_message_string_for_name(message, WI_STR("wired.board.board")));
+	wi_log_info(WI_STR("%@"), wi_p7_message_string_for_name(message, WI_STR("wired.board.new_board")));
+
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -562,7 +568,18 @@ wi_boolean_t wd_boards_move_board(wi_string_t *oldboard, wi_string_t *newboard, 
 		
 		return false;
 	}
+    
+    if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
+									 newboard,
+									 oldboard,
+									 NULL)) {
+		wi_log_error(WI_STR("Could not execute database statement: %m"));
+		wd_user_reply_internal_error(user, wi_error_string(), message);
+		
+		return false;
+	}
 	
+    // braodcast board moved to users
 	privileges = wd_boards_privileges_for_board(newboard);
 	
 	wi_dictionary_rdlock(wd_users);
