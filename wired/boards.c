@@ -508,7 +508,7 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 	wd_board_privileges_t       *privileges;
     wi_string_t                 *old_subboard, *new_subboard;
 	
-    // update the board
+    // update the parent board
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -531,7 +531,7 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 		return false;
 	}
 	
-    // update suboards
+    // update sub-boards of the parent board
 	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
         
         old_subboard = wi_dictionary_data_for_key(results, WI_STR("board"));
@@ -549,10 +549,21 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
                 
                 return false;
             }
+            
+            // update related threads in sub-board
+            if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
+                                             new_subboard,
+                                             old_subboard,
+                                             NULL)) {
+                wi_log_error(WI_STR("Could not execute database statement: %m"));
+                wd_user_reply_internal_error(user, wi_error_string(), message);
+                
+                return false;
+            }
         }
     }
         
-    // update related threads
+    // update related threads of the parent board
     if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -629,6 +640,16 @@ wi_boolean_t wd_boards_move_board(wi_string_t *oldboard, wi_string_t *newboard, 
             new_subboard = wi_string_by_replacing_characters_in_range_with_string(old_subboard, range, newboard);
             
             if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
+                                             new_subboard,
+                                             old_subboard,
+                                             NULL)) {
+                wi_log_error(WI_STR("Could not execute database statement: %m"));
+                wd_user_reply_internal_error(user, wi_error_string(), message);
+                
+                return false;
+            }
+            
+            if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
                                              new_subboard,
                                              old_subboard,
                                              NULL)) {
