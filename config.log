@@ -30,8 +30,8 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 4.00 gigabytes
-Default processor set: 119 tasks, 621 threads, 4 processors
-Load average: 4.37, Mach factor: 0.38
+Default processor set: 121 tasks, 611 threads, 4 processors
+Load average: 6.22, Mach factor: 0.80
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -126,7 +126,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x792793f
+| #define WI_REVISION 0xbbf976f
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -147,7 +147,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x792793f
+| #define WI_REVISION 0xbbf976f
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -358,7 +358,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x792793f
+| #define WI_REVISION 0xbbf976f
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -582,7 +582,7 @@ wireddir='wired'
 #define PACKAGE_VERSION "2.0"
 #define PACKAGE_STRING "wired 2.0"
 #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-#define WI_REVISION 0x792793f
+#define WI_REVISION 0xbbf976f
 #define WD_VERSION "2.0"
 #define WD_BUGREPORT "axel@zankasoftware.com"
 #define WD_USER "nark"

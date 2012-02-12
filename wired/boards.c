@@ -234,7 +234,7 @@ void wd_boards_reply_boards(wd_user_t *user, wi_p7_message_t *message) {
 	wd_board_privileges_t		*privileges;
 	wi_boolean_t				readable, writable;
 
-	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT board, owner, `group`, mode FROM boards"), NULL);
+	statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT board, owner, `group`, mode FROM boards ORDER BY board"), NULL);
 	
 	if(!statement) {
 		wi_log_error(WI_STR("Could not execute database statement: %m"));
@@ -500,11 +500,15 @@ wi_boolean_t wd_boards_add_board(wi_string_t *board, wd_user_t *user, wi_p7_mess
 
 
 wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard, wd_user_t *user, wi_p7_message_t *message) {
-	wi_enumerator_t			*enumerator;
-	wi_p7_message_t			*broadcast;
-	wd_user_t				*peer;
-	wd_board_privileges_t	*privileges;
+	wi_enumerator_t             *enumerator;
+    wi_sqlite3_statement_t      *statement;
+    wi_dictionary_t             *results;
+	wi_p7_message_t             *broadcast;
+	wd_user_t                   *peer;
+	wd_board_privileges_t       *privileges;
+    wi_string_t                 *old_subboard, *new_subboard;
 	
+    // update the board
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -515,6 +519,40 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 		return false;
 	}
     
+    // retrieves subboards
+    statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT board FROM boards WHERE board LIKE ? ORDER BY board"), 
+                                             wi_string_with_format(WI_STR("%@%%"), oldboard), 
+                                             NULL);
+    
+	if(!statement) {
+		wi_log_error(WI_STR("Could not execute database statement: %m"));
+		wd_user_reply_internal_error(user, wi_error_string(), message);
+        
+		return false;
+	}
+	
+    // update suboards
+	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
+        
+        old_subboard = wi_dictionary_data_for_key(results, WI_STR("board"));
+        wi_range_t range = wi_string_range_of_string(old_subboard, oldboard, 0);
+        
+        if(range.location != WI_NOT_FOUND) {
+            new_subboard = wi_string_by_replacing_characters_in_range_with_string(old_subboard, range, newboard);
+            
+            if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
+                                             new_subboard,
+                                             old_subboard,
+                                             NULL)) {
+                wi_log_error(WI_STR("Could not execute database statement: %m"));
+                wd_user_reply_internal_error(user, wi_error_string(), message);
+                
+                return false;
+            }
+        }
+    }
+        
+    // update related threads
     if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -551,14 +589,14 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 
 
 wi_boolean_t wd_boards_move_board(wi_string_t *oldboard, wi_string_t *newboard, wd_user_t *user, wi_p7_message_t *message) {
-	wi_enumerator_t			*enumerator;
-	wi_p7_message_t			*broadcast;
-	wd_user_t				*peer;
-	wd_board_privileges_t	*privileges;
+	wi_enumerator_t             *enumerator;
+    wi_sqlite3_statement_t      *statement;
+    wi_dictionary_t             *results;
+	wi_p7_message_t             *broadcast;
+	wd_user_t                   *peer;
+	wd_board_privileges_t       *privileges;
+    wi_string_t                 *old_subboard, *new_subboard;
     
-    wi_log_info(WI_STR("%@"), wi_p7_message_string_for_name(message, WI_STR("wired.board.board")));
-	wi_log_info(WI_STR("%@"), wi_p7_message_string_for_name(message, WI_STR("wired.board.new_board")));
-
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
 									 newboard,
 									 oldboard,
@@ -568,6 +606,39 @@ wi_boolean_t wd_boards_move_board(wi_string_t *oldboard, wi_string_t *newboard, 
 		
 		return false;
 	}
+    
+    // retrieves subboards
+    statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT board FROM boards WHERE board LIKE ? ORDER BY board"), 
+                                             wi_string_with_format(WI_STR("%@%%"), oldboard), 
+                                             NULL);
+    
+	if(!statement) {
+		wi_log_error(WI_STR("Could not execute database statement: %m"));
+		wd_user_reply_internal_error(user, wi_error_string(), message);
+        
+		return false;
+	}
+	
+    // update suboards
+	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
+        
+        old_subboard = wi_dictionary_data_for_key(results, WI_STR("board"));
+        wi_range_t range = wi_string_range_of_string(old_subboard, oldboard, 0);
+        
+        if(range.location != WI_NOT_FOUND) {
+            new_subboard = wi_string_by_replacing_characters_in_range_with_string(old_subboard, range, newboard);
+            
+            if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
+                                             new_subboard,
+                                             old_subboard,
+                                             NULL)) {
+                wi_log_error(WI_STR("Could not execute database statement: %m"));
+                wd_user_reply_internal_error(user, wi_error_string(), message);
+                
+                return false;
+            }
+        }
+    }
     
     if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE threads SET board = ? WHERE board = ?"),
 									 newboard,
