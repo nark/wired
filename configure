@@ -1945,7 +1945,7 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 	# new GIT:
 	git_rev=$(git log --pretty=format:'%h' -n 1)
 	WI_REVISION=`echo 0x$git_rev`
-	echo "rev: " $WI_REVISION
+	echo "checking for git revision: " $WI_REVISION
 	
 	if test -z "$WI_REVISION"; then
 		WI_REVISION=0

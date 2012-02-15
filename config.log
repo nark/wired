@@ -30,18 +30,20 @@ Kernel configured for up to 4 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3
 Primary memory available: 4.00 gigabytes
-Default processor set: 123 tasks, 600 threads, 4 processors
-Load average: 3.17, Mach factor: 1.33
+Default processor set: 123 tasks, 572 threads, 4 processors
+Load average: 1.68, Mach factor: 2.84
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin
-PATH: /Developer/usr/bin
 PATH: /usr/bin
 PATH: /bin
 PATH: /usr/sbin
 PATH: /sbin
+PATH: /usr/local/bin
+PATH: /usr/X11/bin
+PATH: /usr/libexec
+PATH: /Users/nark/.rvm/bin
 
 
 ## ----------- ##
@@ -53,11 +55,11 @@ configure:1882: result: i686-apple-darwin11.2.0
 configure:1904: checking host system type
 configure:1919: result: i686-apple-darwin11.2.0
 configure:2029: checking for gcc
-configure:2045: found /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc
+configure:2045: found /usr/bin/gcc
 configure:2056: result: gcc
 configure:2294: checking for C compiler version
 configure:2301: gcc --version >&5
-i686-apple-darwin10-llvm-gcc-4.2 (GCC) 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2377.00)
+i686-apple-darwin11-llvm-gcc-4.2 (GCC) 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2336.1.00)
 Copyright (C) 2007 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -65,10 +67,10 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 configure:2304: $? = 0
 configure:2311: gcc -v >&5
 Using built-in specs.
-Target: i686-apple-darwin10
-Configured with: /private/var/tmp/llvmgcc42_Embedded/llvmgcc42_Embedded-2377~4/src/configure --enable-checking --enable-werror --prefix=/Developer/usr/llvm-gcc-4.2 --mandir=/share/man --enable-languages=c,objc,c++,obj-c++ --program-prefix=llvm- --program-transform-name=/^[cg][^.-]*$/s/$/-4.2/ --with-slibdir=/usr/lib --build=i686-apple-darwin10 --enable-llvm=/private/var/tmp/llvmgcc42_Embedded/llvmgcc42_Embedded-2377~4/dst-llvmCore/Developer/usr/local --program-prefix=i686-apple-darwin10- --host=x86_64-apple-darwin10 --target=i686-apple-darwin10 --with-gxx-include-dir=/usr/include/c++/4.2.1
+Target: i686-apple-darwin11
+Configured with: /private/var/tmp/llvmgcc42/llvmgcc42-2336.1~22/src/configure --disable-checking --enable-werror --prefix=/Developer/usr/llvm-gcc-4.2 --mandir=/share/man --enable-languages=c,objc,c++,obj-c++ --program-prefix=llvm- --program-transform-name=/^[cg][^.-]*$/s/$/-4.2/ --with-slibdir=/usr/lib --build=i686-apple-darwin11 --enable-llvm=/private/var/tmp/llvmgcc42/llvmgcc42-2336.1~22/dst-llvmCore/Developer/usr/local --program-prefix=i686-apple-darwin11- --host=x86_64-apple-darwin11 --target=i686-apple-darwin11 --with-gxx-include-dir=/usr/include/c++/4.2.1
 Thread model: posix
-gcc version 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2377.00)
+gcc version 4.2.1 (Based on Apple Inc. build 5658) (LLVM build 2336.1.00)
 configure:2314: $? = 0
 configure:2321: gcc -V >&5
 llvm-gcc-4.2: argument to `-V' is missing
@@ -126,7 +128,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x55085e9
+| #define WI_REVISION 0xd11d7fc
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -147,7 +149,7 @@ configure: failed program was:
 | #define PACKAGE_VERSION "2.0"
 | #define PACKAGE_STRING "wired 2.0"
 | #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x55085e9
+| #define WI_REVISION 0xd11d7fc
 | #define WD_VERSION "2.0"
 | #define WD_BUGREPORT "axel@zankasoftware.com"
 | #define WD_USER "nark"
@@ -248,189 +250,6 @@ configure:5992: checking for CoreServices/CoreServices.h
 configure:6000: result: yes
 configure:6058: checking Carbon/Carbon.h usability
 configure:6075: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES conftest.c >&5
-configure:6081: $? = 0
-configure:6095: result: yes
-configure:6099: checking Carbon/Carbon.h presence
-configure:6114: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES conftest.c
-configure:6120: $? = 0
-configure:6134: result: yes
-configure:6167: checking for Carbon/Carbon.h
-configure:6175: result: yes
-configure:6236: checking CommonCrypto/CommonDigest.h usability
-configure:6253: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON conftest.c >&5
-configure:6259: $? = 0
-configure:6273: result: yes
-configure:6277: checking CommonCrypto/CommonDigest.h presence
-configure:6292: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON conftest.c
-configure:6298: $? = 0
-configure:6312: result: yes
-configure:6345: checking for CommonCrypto/CommonDigest.h
-configure:6353: result: yes
-configure:6236: checking CommonCrypto/CommonCryptor.h usability
-configure:6253: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS conftest.c >&5
-configure:6259: $? = 0
-configure:6273: result: yes
-configure:6277: checking CommonCrypto/CommonCryptor.h presence
-configure:6292: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS conftest.c
-configure:6298: $? = 0
-configure:6312: result: yes
-configure:6345: checking for CommonCrypto/CommonCryptor.h
-configure:6353: result: yes
-configure:6415: checking sqlite3.h usability
-configure:6432: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS conftest.c >&5
-configure:6438: $? = 0
-configure:6452: result: yes
-configure:6456: checking sqlite3.h presence
-configure:6471: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS conftest.c
-configure:6477: $? = 0
-configure:6491: result: yes
-configure:6524: checking for sqlite3.h
-configure:6532: result: yes
-configure:6562: checking for sqlite3_open in -lsqlite3
-configure:6597: gcc -o conftest -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -L/usr/local/lib conftest.c -lsqlite3  -framework CoreServices -framework Carbon >&5
-configure:6603: $? = 0
-configure:6621: result: yes
-configure:6682: checking for CommonCrypto/CommonDigest.h
-configure:6688: result: yes
-configure:6682: checking for CommonCrypto/CommonCryptor.h
-configure:6688: result: yes
-configure:7266: checking openssl/sha.h usability
-configure:7283: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 conftest.c >&5
-configure:7289: $? = 0
-configure:7303: result: yes
-configure:7307: checking openssl/sha.h presence
-configure:7322: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 conftest.c
-configure:7328: $? = 0
-configure:7342: result: yes
-configure:7375: checking for openssl/sha.h
-configure:7383: result: yes
-configure:7415: checking for SHA1_Init in -lcrypto
-configure:7450: gcc -o conftest -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -L/usr/local/lib conftest.c -lcrypto  -framework CoreServices -framework Carbon -lsqlite3 >&5
-configure:7456: $? = 0
-configure:7474: result: yes
-configure:7606: checking libxml/parser.h usability
-configure:7623: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 conftest.c >&5
-configure:7629: $? = 0
-configure:7643: result: yes
-configure:7647: checking libxml/parser.h presence
-configure:7662: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 conftest.c
-configure:7668: $? = 0
-configure:7682: result: yes
-configure:7715: checking for libxml/parser.h
-configure:7723: result: yes
-configure:7753: checking for xmlParseFile in -lxml2
-configure:7788: gcc -o conftest -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -L/usr/local/lib conftest.c -lxml2  -framework CoreServices -framework Carbon -lsqlite3 -lcrypto >&5
-configure:7794: $? = 0
-configure:7812: result: yes
-configure:7890: checking zlib.h usability
-configure:7907: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST conftest.c >&5
-configure:7913: $? = 0
-configure:7927: result: yes
-configure:7931: checking zlib.h presence
-configure:7946: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST conftest.c
-configure:7952: $? = 0
-configure:7966: result: yes
-configure:7999: checking for zlib.h
-configure:8007: result: yes
-configure:8037: checking for deflate in -lz
-configure:8072: gcc -o conftest -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -L/usr/local/lib conftest.c -lz  -framework CoreServices -framework Carbon -lsqlite3 -lcrypto -lxml2 >&5
-configure:8078: $? = 0
-configure:8096: result: yes
-configure:8175: checking dns_sd.h usability
-configure:8192: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7 conftest.c >&5
-configure:8198: $? = 0
-configure:8212: result: yes
-configure:8216: checking dns_sd.h presence
-configure:8231: gcc -E -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7 conftest.c
-configure:8237: $? = 0
-configure:8251: result: yes
-configure:8284: checking for dns_sd.h
-configure:8292: result: yes
-configure:8301: checking for DNSServiceRegister in -ldns_sd
-configure:8336: gcc -o conftest -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7 -L/usr/local/lib conftest.c -ldns_sd  -framework CoreServices -framework Carbon -lsqlite3 -lcrypto -lxml2 -lz >&5
-ld: library not found for -ldns_sd
-collect2: ld returned 1 exit status
-configure:8342: $? = 1
-configure: failed program was:
-| /* confdefs.h.  */
-| #define PACKAGE_NAME "wired"
-| #define PACKAGE_TARNAME "wired"
-| #define PACKAGE_VERSION "2.0"
-| #define PACKAGE_STRING "wired 2.0"
-| #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-| #define WI_REVISION 0x55085e9
-| #define WD_VERSION "2.0"
-| #define WD_BUGREPORT "axel@zankasoftware.com"
-| #define WD_USER "nark"
-| #define WD_GROUP "daemon"
-| #define WD_ROOT "/usr/local/wired"
-| #define STDC_HEADERS 1
-| #define HAVE_SYS_TYPES_H 1
-| #define HAVE_SYS_STAT_H 1
-| #define HAVE_STDLIB_H 1
-| #define HAVE_STRING_H 1
-| #define HAVE_MEMORY_H 1
-| #define HAVE_STRINGS_H 1
-| #define HAVE_INTTYPES_H 1
-| #define HAVE_STDINT_H 1
-| #define HAVE_UNISTD_H 1
-| #define HAVE_PTHREAD_H 1
-| #define HAVE_CORESERVICES_CORESERVICES_H 1
-| #define HAVE_CARBON_CARBON_H 1
-| #define HAVE_COMMONCRYPTO_COMMONDIGEST_H 1
-| #define HAVE_COMMONCRYPTO_COMMONCRYPTOR_H 1
-| #define HAVE_SQLITE3_H 1
-| #define HAVE_COMMONCRYPTO_COMMONDIGEST_H 1
-| #define HAVE_COMMONCRYPTO_COMMONCRYPTOR_H 1
-| #define HAVE_OPENSSL_SHA_H 1
-| #define HAVE_LIBXML_PARSER_H 1
-| #define HAVE_ZLIB_H 1
-| #define HAVE_DNS_SD_H 1
-| /* end confdefs.h.  */
-| 
-| /* Override any GCC internal prototype to avoid an error.
-|    Use char because int might match the return type of a GCC
-|    builtin and then its argument prototype would still apply.  */
-| #ifdef __cplusplus
-| extern "C"
-| #endif
-| char DNSServiceRegister ();
-| int
-| main ()
-| {
-| return DNSServiceRegister ();
-|   ;
-|   return 0;
-| }
-configure:8360: result: no
-configure:8385: checking for special C compiler options needed for large files
-configure:8478: result: no
-configure:8484: checking for _FILE_OFFSET_BITS value needed for large files
-configure:8519: gcc -c -g -O2 -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7 conftest.c >&5
-configure:8525: $? = 0
-configure:8593: result: no
-configure:8863: creating ./config.status
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by wired config.status 2.0, which was
-generated by GNU Autoconf 2.61.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status 
-
-on MacBook-Pro-de-nark.local
-
-config.status:613: creating Makefile
-config.status:613: creating config.h
-config.status:850: config.h is unchanged
-configure:9943: === configuring in libwired (/Users/nark/Development/Me/Cocoa/Wired/wired/wired/libwired)
-configure:10046: running /bin/sh ./configure '--prefix=/usr/local'  '--enable-pthreads' '--enable-libxml2' '--enable-sqlite3' '--enable-p7' '--with-rundir=../run/libwired' '--with-objdir=../obj' --cache-file=/dev/null --srcdir=.
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -460,17 +279,10 @@ ac_cv_func_gethostent=yes
 ac_cv_func_herror=yes
 ac_cv_func_pow=yes
 ac_cv_func_setsockopt=yes
-ac_cv_header_Carbon_Carbon_h=yes
-ac_cv_header_CommonCrypto_CommonCryptor_h=yes
-ac_cv_header_CommonCrypto_CommonDigest_h=yes
 ac_cv_header_CoreServices_CoreServices_h=yes
-ac_cv_header_dns_sd_h=yes
 ac_cv_header_inttypes_h=yes
-ac_cv_header_libxml_parser_h=yes
 ac_cv_header_memory_h=yes
-ac_cv_header_openssl_sha_h=yes
 ac_cv_header_pthread_h=yes
-ac_cv_header_sqlite3_h=yes
 ac_cv_header_stdc=yes
 ac_cv_header_stdint_h=yes
 ac_cv_header_stdlib_h=yes
@@ -479,13 +291,7 @@ ac_cv_header_strings_h=yes
 ac_cv_header_sys_stat_h=yes
 ac_cv_header_sys_types_h=yes
 ac_cv_header_unistd_h=yes
-ac_cv_header_zlib_h=yes
 ac_cv_host=i686-apple-darwin11.2.0
-ac_cv_lib_crypto_SHA1_Init=yes
-ac_cv_lib_dns_sd_DNSServiceRegister=no
-ac_cv_lib_sqlite3_sqlite3_open=yes
-ac_cv_lib_xml2_xmlParseFile=yes
-ac_cv_lib_z_deflate=yes
 ac_cv_objext=o
 ac_cv_path_EGREP='/usr/bin/grep -E'
 ac_cv_path_GREP=/usr/bin/grep
@@ -495,8 +301,6 @@ ac_cv_prog_ac_ct_CC=gcc
 ac_cv_prog_cc_c89=
 ac_cv_prog_cc_g=yes
 ac_cv_prog_make_make_set=yes
-ac_cv_sys_file_offset_bits=no
-ac_cv_sys_largefile_CC=no
 
 ## ----------------- ##
 ## Output variables. ##
@@ -505,10 +309,9 @@ ac_cv_sys_largefile_CC=no
 CC='gcc'
 CFLAGS='-g -O2'
 CPP='gcc -E'
-CPPFLAGS='-I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7'
-DEFS='-DHAVE_CONFIG_H'
-ECHO_C=''
-ECHO_N='-n'
+CPPFLAGS='-I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES'
+DEFS=''
+ECHO_C='ECHO_N=''
 ECHO_T=''
 EGREP='/usr/bin/grep -E'
 EXEEXT=''
@@ -518,7 +321,7 @@ INSTALL_PROGRAM='${INSTALL}'
 INSTALL_SCRIPT='${INSTALL}'
 LDFLAGS='-L/usr/local/lib'
 LIBOBJS=''
-LIBS='-framework CoreServices -framework Carbon -lsqlite3 -lcrypto -lxml2 -lz'
+LIBS='-framework CoreServices'
 LTLIBOBJS=''
 OBJEXT='o'
 PACKAGE_BUGREPORT='axel@zankasoftware.com'
@@ -544,7 +347,7 @@ datadir='${datarootdir}'
 datarootdir='${prefix}/share'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
 dvidir='${docdir}'
-exec_prefix='${prefix}'
+exec_prefix='NONE'
 fake_prefix='${prefix}'
 host='i686-apple-darwin11.2.0'
 host_alias=''
@@ -562,13 +365,13 @@ mandir='${datarootdir}/man'
 objdir='obj'
 oldincludedir='/usr/include'
 pdfdir='${docdir}'
-prefix='/usr/local'
+prefix='NONE'
 program_transform_name='s,x,x,'
 psdir='${docdir}'
 rundir='run'
 sbindir='${exec_prefix}/sbin'
 sharedstatedir='${prefix}/com'
-subdirs=' libwired'
+subdirs=''
 sysconfdir='${prefix}/etc'
 target_alias=''
 wireddir='wired'
@@ -582,7 +385,7 @@ wireddir='wired'
 #define PACKAGE_VERSION "2.0"
 #define PACKAGE_STRING "wired 2.0"
 #define PACKAGE_BUGREPORT "axel@zankasoftware.com"
-#define WI_REVISION 0x55085e9
+#define WI_REVISION 0xd11d7fc
 #define WD_VERSION "2.0"
 #define WD_BUGREPORT "axel@zankasoftware.com"
 #define WD_USER "nark"
@@ -600,16 +403,6 @@ wireddir='wired'
 #define HAVE_UNISTD_H 1
 #define HAVE_PTHREAD_H 1
 #define HAVE_CORESERVICES_CORESERVICES_H 1
-#define HAVE_CARBON_CARBON_H 1
-#define HAVE_COMMONCRYPTO_COMMONDIGEST_H 1
-#define HAVE_COMMONCRYPTO_COMMONCRYPTOR_H 1
-#define HAVE_SQLITE3_H 1
-#define HAVE_COMMONCRYPTO_COMMONDIGEST_H 1
-#define HAVE_COMMONCRYPTO_COMMONCRYPTOR_H 1
-#define HAVE_OPENSSL_SHA_H 1
-#define HAVE_LIBXML_PARSER_H 1
-#define HAVE_ZLIB_H 1
-#define HAVE_DNS_SD_H 1
-#define _DARWIN_USE_64_BIT_INODE 1
 
-configure: exit 0
+configure: caught signal 2
+configure: exit 1

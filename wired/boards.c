@@ -507,7 +507,12 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 	wd_user_t                   *peer;
 	wd_board_privileges_t       *privileges;
     wi_string_t                 *old_subboard, *new_subboard;
-	
+    wi_array_t                  *old_subboards, *new_subboards;
+    int                         i;
+    
+    old_subboards = wi_mutable_array();
+	new_subboards = wi_mutable_array();
+    
     // update the parent board
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
 									 newboard,
@@ -519,7 +524,7 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 		return false;
 	}
     
-    // retrieves subboards
+    // retrieves matching board and subboards
     statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT board FROM boards WHERE board LIKE ? ORDER BY board"), 
                                              wi_string_with_format(WI_STR("%@%%"), oldboard), 
                                              NULL);
@@ -530,20 +535,39 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
         
 		return false;
 	}
-	
-    // update sub-boards of the parent board
-	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && wi_dictionary_count(results) > 0) {
-        
+    	
+    // temporary store subboards to avoid modifying the database during the satement
+	while((results = wi_sqlite3_fetch_statement_results(wd_database, statement)) && results && wi_dictionary_count(results) > 0) {
+
         old_subboard = wi_dictionary_data_for_key(results, WI_STR("board"));
-        wi_range_t range = wi_string_range_of_string(old_subboard, oldboard, 0);
         
-        if(range.location != WI_NOT_FOUND) {
-            new_subboard = wi_string_by_replacing_characters_in_range_with_string(old_subboard, range, newboard);
+        // exclude parent board
+        if(!wi_is_equal(old_subboard, newboard)) {
+            wi_range_t range = wi_string_range_of_string(old_subboard, oldboard, 0);
             
+            // prepare renaming
+            if(range.location != WI_NOT_FOUND) {
+                new_subboard = wi_string_by_replacing_characters_in_range_with_string(old_subboard, range, newboard);
+            
+                wi_mutable_array_add_data(old_subboards, old_subboard);
+                wi_mutable_array_add_data(new_subboards, new_subboard);
+            }
+        }
+    }
+    
+    // update subboards
+    for(i = 0; i < wi_array_count(old_subboards); i++) {
+        
+        old_subboard = wi_array_data_at_index(old_subboards, i);
+        new_subboard = wi_array_data_at_index(new_subboards, i);
+        
+        if(!wi_is_equal(old_subboard, new_subboard)) {
+            // update boards path
             if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE boards SET board = ? WHERE board = ?"),
                                              new_subboard,
                                              old_subboard,
                                              NULL)) {
+                
                 wi_log_error(WI_STR("Could not execute database statement: %m"));
                 wd_user_reply_internal_error(user, wi_error_string(), message);
                 

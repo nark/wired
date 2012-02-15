@@ -72,7 +72,9 @@ static void						wd_signal_crash(int);
 static void						wd_signal_pipe(int);
 
 static void						wd_schedule(void);
+static void                     wd_database_snapshot_register_with_timer(wi_timer_t *);
 
+static wi_timer_t               *wd_database_snapshot_timer;
 
 wi_boolean_t					wd_running = true;
 
@@ -290,7 +292,16 @@ int main(int argc, const char **argv) {
 		wi_log_info(WI_STR("Operating as user %d, group %d"),
 			wi_user_id(), wi_group_id());
 	}
-
+    
+    wi_time_interval_t interval = wi_config_time_interval_for_name(wd_config, WI_STR("snapshot time"));
+    
+    if(interval == 0)
+        interval = 60*60*24;
+    
+    wd_database_snapshot_timer = wi_timer_init_with_function(wi_timer_alloc(),
+                                                             wd_database_snapshot_register_with_timer,
+                                                             interval,
+                                                             true);
 	wd_signals_init();
 	wd_block_signals();
 	wd_schedule();
@@ -596,10 +607,17 @@ static void wd_signal_pipe(int sigraised) {
 #pragma mark -
 
 static void wd_schedule(void) {
+    
+    wi_timer_schedule(wd_database_snapshot_timer);
+    
 	wd_files_schedule();
 	wd_server_schedule();
 	wd_servers_schedule();
 	wd_trackers_schedule();
 	wd_transfers_schedule();
 	wd_users_schedule();
+}
+
+static void wd_database_snapshot_register_with_timer(wi_timer_t *timer) {
+    wi_sqlite3_snapshot_database_at_path(wd_database, WI_STR("database.sqlite3.bak"));
 }

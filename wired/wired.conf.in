@@ -25,12 +25,20 @@ port = 4871
 map port = no
 
 # Name or id of the user that the server should operate as.
-# (default "@WD_USER@")
-user = @WD_USER@
+# (default "nark")
+user = nark
 
 # Name or id of the group that the server should operate as.
-# (default "@WD_GROUP@")
-group = @WD_GROUP@
+# (default "daemon")
+group = daemon
+
+
+### DATABASE #############################################################
+
+# If set, snapshots database after this many seconds. Without it, snapshots
+# will use the default value.
+# (default 86400)
+snapshot time = 86400
 
 
 ### FILES #############################################################
