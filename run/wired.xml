@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p7:protocol xmlns:p7="http://www.zankasoftware.com/P7/Specification"
+<p7:protocol xmlns:p7="http://www.read-write.fr/wired/html/wired.html"
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			 xsi:schemaLocation="http://www.zankasoftware.com/P7/Specification p7-specification.xsd"
+			 xsi:schemaLocation="http://www.read-write.fr/wired/html/p7-specification.xsd"
 			 name="Wired"
 			 version="2.0b55">
 	<p7:documentation>
@@ -1114,6 +1114,11 @@
 			</p7:documentation>
 		</p7:field>
 		<p7:field name="wired.event.from_time" type="date" id="10004" version="2.0">
+			<p7:documentation>
+				TBD
+			</p7:documentation>
+		</p7:field>
+		<p7:field name="wired.event.to_time" type="date" id="10050" version="2.0">
 			<p7:documentation>
 				TBD
 			</p7:documentation>
@@ -2912,6 +2917,15 @@
 			<p7:parameter field="wired.transaction" version="2.0" />
 		</p7:message>
 		
+		<p7:message name="wired.event.delete_events" id="10022" version="2.0">
+			<p7:documentation>
+				TBD
+			</p7:documentation>
+			<p7:parameter field="wired.transaction" version="2.0" />
+			<p7:parameter field="wired.event.from_time" version="2.0" />
+			<p7:parameter field="wired.event.to_time" version="2.0" />
+		</p7:message>
+		
 		<p7:message name="wired.event.subscribe" id="10011" version="2.0">
 			<p7:documentation>
 				Subscribe to events message.
@@ -4651,6 +4665,16 @@
 					<p7:reply message="wired.event.event_list" count="*" use="required" version="2.0" />
 					<p7:reply message="wired.event.event_list.done" count="1" use="required" version="2.0" />
 				</p7:and>
+				<p7:reply message="wired.error" count="1" use="required" version="2.0" />
+			</p7:or>
+		</p7:transaction>
+		
+		<p7:transaction message="wired.event.delete_events" originator="client" version="2.0">
+			<p7:documentation>
+				TBD
+			</p7:documentation>
+			<p7:or>
+				<p7:reply message="wired.okay" count="1" use="required" version="2.0" />
 				<p7:reply message="wired.error" count="1" use="required" version="2.0" />
 			</p7:or>
 		</p7:transaction>

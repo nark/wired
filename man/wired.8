@@ -1,6 +1,7 @@
 .\" wired.8
 .\"
 .\" Copyright (c) 2003-2007 Axel Andersson
+.\" Copyright (c) 2011-2012 Rafael Warnault
 .\" All rights reserved.
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -127,8 +128,6 @@ this list describes the default locations. All files are contained within the
 .Va server_root
 path.
 .Bl -tag -width Ds
-.It Pa banlist
-A newline separated list of permanently banned IPs. Subnet notation (192.168.0.0/16 or 192.168.0.0/255.255.0.0) and wildcards (192.168.*.*) are recognized.
 .It Pa etc/wired.conf
 A configuration file for
 .Nm wired .
@@ -136,43 +135,6 @@ Its file format is described in
 .Xr wired.conf 5 .
 .It Pa files/
 A directory containing all files that are publically available to connected users.
-.It Pa groups
-A newline separated list of group accounts. Each line consists of the following fields, separated by `:':
-.Pp
-.Dl name
-.Dl can get user info
-.Dl can broadcast
-.Dl can post news
-.Dl can clear news
-.Dl can download
-.Dl can upload
-.Dl can upload anywhere
-.Dl can create folders
-.Dl can move files
-.Dl can delete files
-.Dl can view drop boxes
-.Dl can create accounts
-.Dl can edit accounts
-.Dl can delete accounts
-.Dl can elevate privileges
-.Dl can kick users
-.Dl can ban users
-.Dl cannot be kicked
-.Dl download speed limit
-.Dl upload speed limit
-.Dl download limit
-.Dl upload limit
-.Dl can set chat topic
-.Dl files root directory
-.Pp
-.It Pa news
-A public news file for the server. This file is a series of the following fields, separated by an ASCII file separator character:
-.Pp
-.Dl name
-.Dl timestamp
-.Dl content
-.Pp
-Each such record of fields is separated by an ASCII group separator character.
 .It Pa wired.status
 A status file for the daemon. It is written to periodically, and is used by
 .Xr wiredctl 8
@@ -188,41 +150,10 @@ and others to display some statistics. The file is a series of numbers, separate
 .Dl number of bytes downloaded
 .Dl number of bytes uploaded
 .Pp
-.It Pa users
-A newline separated list of user accounts. Each line consists of the following fields, separated by `:':
-.Pp
-.Dl name
-.Dl password
-.Dl group
-.Dl can get user info
-.Dl can broadcast
-.Dl can post news
-.Dl can clear news
-.Dl can download
-.Dl can upload
-.Dl can upload anywhere
-.Dl can create folders
-.Dl can move files
-.Dl can delete files
-.Dl can view drop boxes
-.Dl can create accounts
-.Dl can edit accounts
-.Dl can delete accounts
-.Dl can elevate privileges
-.Dl can kick users
-.Dl can ban users
-.Dl cannot be kicked
-.Dl download speed limit
-.Dl upload speed limit
-.Dl download limit
-.Dl upload limit
-.Dl can set chat topic
-.Dl files root directory
-.Pp
-.El
 .Sh AUTHORS
 .Nm wired
-and the Wired protocol were developed by Axel Andersson, Zanka Software.
+and the Wired protocol was created by Axel Andersson, Zanka Software. They are both currently 
+maintaned by Rafael Warnault, Read-Write.fr
 .Sh SEE ALSO
 .Xr wiredctl 1 ,
 .Xr wired.conf 5

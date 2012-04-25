@@ -88,21 +88,37 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
 	wi_p7_message_t				*reply;
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*event, *parameters, *time, *nick, *login, *ip;
+    wi_string_t                 *sqlite_time, *sqlite_later_time;
+    wi_time_interval_t			interval;
 	
 	if(fromtime) {
+        sqlite_time = wi_date_sqlite3_string(fromtime);
+        
+//        wi_log_info(WI_STR("time: %@"), sqlite_time);
+//        wi_log_info(WI_STR("numberofdays: %d"), numberofdays);
+        
 		if(numberofdays > 0) {
+			
+			interval			= wi_date_time_interval(fromtime) + (numberofdays * 24 * 3600);
+			
+			wi_date_t *later_date = wi_date_with_time_interval(interval);
+			wi_log_info(WI_STR("fromtime: %@"), fromtime);
+			wi_log_info(WI_STR("later_date: %@"), later_date);
+			
+			sqlite_later_time	= wi_date_sqlite3_string(later_date);
+			
 			statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT event, parameters, time, nick, login, ip "
 																		 "FROM events "
-																		 "WHERE time >= DATETIME(?) AND time <= DATETIME(?, '+? day')"),
-													 fromtime,
-													 fromtime,
-													 WI_INT32(numberofdays),
+																		 "WHERE time >= DATETIME(?) AND time <= DATETIME(?)"),
+													 sqlite_time,
+													 sqlite_later_time,
 													 NULL);
+            
 		} else {
 			statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT event, parameters, time, nick, login, ip "
 																		 "FROM events "
 																		 "WHERE time >= DATETIME(?)"),
-													 fromtime,
+													 sqlite_time,
 													 NULL);
 		}
 	} else {
@@ -158,6 +174,27 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
     wi_p7_message_debug = false;
     
 	return true;
+}
+
+
+wi_boolean_t wd_events_delete_events() {
+	wi_dictionary_t		*results;
+	
+	wi_sqlite3_begin_immediate_transaction(wd_database);
+	
+	results = wi_sqlite3_execute_statement(wd_database, 
+										   WI_STR("DELETE FROM events"),
+										   NULL);
+	
+	if(results) {
+		wi_sqlite3_commit_transaction(wd_database);
+			
+		return true;
+	} else {
+		wi_sqlite3_rollback_transaction(wd_database);
+		
+		return false;
+	}
 }
 
 

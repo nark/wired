@@ -59,7 +59,7 @@
 #define HAVE_ZLIB_H 1
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "axel@zankasoftware.com"
+#define PACKAGE_BUGREPORT "dev@read-write.fr"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "wired"
@@ -77,7 +77,7 @@
 #define STDC_HEADERS 1
 
 /* Maintainer's email address */
-#define WD_BUGREPORT "axel@zankasoftware.com"
+#define WD_BUGREPORT "dev@read-write.fr"
 
 /* Group name */
 #define WD_GROUP "daemon"
@@ -86,13 +86,13 @@
 #define WD_ROOT "/usr/local/wired"
 
 /* User name */
-#define WD_USER "nark"
+#define WD_USER "wired"
 
 /* Application version */
 #define WD_VERSION "2.0"
 
 /* Subversion revision */
-#define WI_REVISION 0xd11d7fc
+#define WI_REVISION "cdfca89"
 
 /* 64-bit ino_t on Darwin */
 #define _DARWIN_USE_64_BIT_INODE 1

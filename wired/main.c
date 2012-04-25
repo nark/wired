@@ -317,7 +317,9 @@ int main(int argc, const char **argv) {
 	
 	wd_users_remove_all_users();
 	wd_cleanup();
+	
 	wi_log_close();
+	
 	wi_release(pool);
 
 	return 0;
@@ -326,8 +328,10 @@ int main(int argc, const char **argv) {
 
 
 static void wd_cleanup(void) {
-	wd_database_close();
+	
 	wd_server_cleanup();
+	wd_database_close();
+	
 	wd_delete_pid();
 	wd_delete_status();
 }
@@ -353,7 +357,7 @@ Options:\n\
     -u             do not chroot(2) to root path\n\
     -v             display version information\n\
 \n\
-By Axel Andersson <%s>\n", WD_BUGREPORT);
+By Rafaël Warnault <%s>\n", WD_BUGREPORT);
 
 	exit(2);
 }
@@ -372,7 +376,7 @@ static void wd_version(void) {
 
 static void wd_write_pid(void) {
 	wi_string_t		*path, *string;
-	
+
 	path = WI_STR("wired.pid");
 	string = wi_string_with_format(WI_STR("%d\n"), getpid());
 	
@@ -524,13 +528,13 @@ static void wd_signals_init(void) {
 
 
 static void wd_block_signals(void) {
-	wi_thread_block_signals(SIGHUP, SIGUSR1, SIGUSR2, SIGINT, SIGTERM, SIGQUIT, SIGPIPE, 0);
+	wi_thread_block_signals(SIGHUP, SIGUSR1, SIGUSR2, SIGINT, SIGTERM, SIGQUIT, SIGPIPE, SIGPROF, 0);
 }
 
 
 
 static int wd_wait_signals(void) {
-	return wi_thread_wait_for_signals(SIGHUP, SIGUSR1, SIGUSR2, SIGINT, SIGTERM, SIGQUIT, SIGPIPE, 0);
+	return wi_thread_wait_for_signals(SIGHUP, SIGUSR1, SIGUSR2, SIGINT, SIGTERM, SIGQUIT, SIGPIPE, SIGPROF, 0);
 }
 
 
@@ -565,6 +569,11 @@ void wd_signal_thread(wi_runtime_instance_t *arg) {
 			case SIGUSR2:
 				wi_log_info(WI_STR("Signal USR2 received, indexing files"));
 				wd_index_index_files(false);
+				break;
+				
+			case SIGPROF:
+				wi_log_info(WI_STR("Signal PROF received, cleaning events"));
+				wd_events_delete_events();
 				break;
 
 			case SIGINT:

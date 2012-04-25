@@ -13,7 +13,7 @@ wireddir			= wired
 
 WD_VERSION			= 2.0
 WD_MAINTAINER		= 0
-WD_USER				= nark
+WD_USER				= wired
 WD_GROUP			= daemon
 
 DISTFILES			= INSTALL LICENSE NEWS README Makefile Makefile.in \

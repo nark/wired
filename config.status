@@ -489,7 +489,7 @@ s,@PACKAGE_NAME@,|#_!!_#|wired,g
 s,@PACKAGE_TARNAME@,|#_!!_#|wired,g
 s,@PACKAGE_VERSION@,|#_!!_#|2.0,g
 s,@PACKAGE_STRING@,|#_!!_#|wired 2.0,g
-s,@PACKAGE_BUGREPORT@,|#_!!_#|axel@|#_!!_#|zankasoftware.com,g
+s,@PACKAGE_BUGREPORT@,|#_!!_#|dev@|#_!!_#|read-write.fr,g
 s,@exec_prefix@,|#_!!_#|${prefix},g
 s,@prefix@,|#_!!_#|/usr/local,g
 s,@program_transform_name@,|#_!!_#|s\,x\,x\,,g
@@ -520,14 +520,14 @@ s,@LIBS@,|#_!!_#|-framework CoreServices -framework Carbon -lsqlite3 -lcrypto -l
 s,@build_alias@,|#_!!_#|,g
 s,@host_alias@,|#_!!_#|,g
 s,@target_alias@,|#_!!_#|,g
-s,@build@,|#_!!_#|i686-apple-darwin11.2.0,g
+s,@build@,|#_!!_#|i686-apple-darwin11.3.0,g
 s,@build_cpu@,|#_!!_#|i686,g
 s,@build_vendor@,|#_!!_#|apple,g
-s,@build_os@,|#_!!_#|darwin11.2.0,g
-s,@host@,|#_!!_#|i686-apple-darwin11.2.0,g
+s,@build_os@,|#_!!_#|darwin11.3.0,g
+s,@host@,|#_!!_#|i686-apple-darwin11.3.0,g
 s,@host_cpu@,|#_!!_#|i686,g
 s,@host_vendor@,|#_!!_#|apple,g
-s,@host_os@,|#_!!_#|darwin11.2.0,g
+s,@host_os@,|#_!!_#|darwin11.3.0,g
 s,@WD_VERSION@,|#_!!_#|2.0,g
 s,@CC@,|#_!!_#|gcc,g
 s,@CFLAGS@,|#_!!_#|-g -O2,g
@@ -540,7 +540,7 @@ s,@INSTALL_PROGRAM@,|#_!!_#|${INSTALL},g
 s,@INSTALL_SCRIPT@,|#_!!_#|${INSTALL},g
 s,@INSTALL_DATA@,|#_!!_#|${INSTALL} -m 644,g
 s,@SET_MAKE@,|#_!!_#|,g
-s,@WD_USER@,|#_!!_#|nark,g
+s,@WD_USER@,|#_!!_#|wired,g
 s,@WD_GROUP@,|#_!!_#|daemon,g
 s,@wireddir@,|#_!!_#|wired,g
 s,@fake_prefix@,|#_!!_#|${prefix},g
@@ -799,7 +799,7 @@ which seems to be undefined.  Please make sure it is defined." >&2;}
   #
     # First, check the format of the line:
     cat >"$tmp/defines.sed" <<\CEOF
-/^[	 ]*#[	 ]*undef[	 ][	 ]*[_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ][_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]*[	 ]*$/b def
+/^[	 ]*#[	 ]*undef[	 ][	 ]*[_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ][_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]*[	 ]*/b def
 /^[	 ]*#[	 ]*define[	 ][	 ]*[_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ][_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]*[(	 ]/b def
 b
 :def
@@ -808,11 +808,11 @@ s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_NAME\)[	 (].*,\1define\2 "wired" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_TARNAME\)[	 (].*,\1define\2 "wired" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_VERSION\)[	 (].*,\1define\2 "2.0" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_STRING\)[	 (].*,\1define\2 "wired 2.0" ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_BUGREPORT\)[	 (].*,\1define\2 "axel@zankasoftware.com" ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*WI_REVISION\)[	 (].*,\1define\2 0xd11d7fc ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*PACKAGE_BUGREPORT\)[	 (].*,\1define\2 "dev@read-write.fr" ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*WI_REVISION\)[	 (].*,\1define\2 "cdfca89" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_VERSION\)[	 (].*,\1define\2 "2.0" ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*WD_BUGREPORT\)[	 (].*,\1define\2 "axel@zankasoftware.com" ,
-s,^\([	 #]*\)[^	 ]*\([	 ]*WD_USER\)[	 (].*,\1define\2 "nark" ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*WD_BUGREPORT\)[	 (].*,\1define\2 "dev@read-write.fr" ,
+s,^\([	 #]*\)[^	 ]*\([	 ]*WD_USER\)[	 (].*,\1define\2 "wired" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_GROUP\)[	 (].*,\1define\2 "daemon" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*WD_ROOT\)[	 (].*,\1define\2 "/usr/local/wired" ,
 s,^\([	 #]*\)[^	 ]*\([	 ]*STDC_HEADERS\)[	 (].*,\1define\2 1 ,

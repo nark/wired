@@ -1,19 +1,19 @@
 #!/bin/sh
 
 # The path to your config file
-CONFIGFILE="@wireddir@/etc/wired.conf"
+CONFIGFILE="/usr/local/wired/etc/wired.conf"
 
 # The path to your pid file
-PIDFILE="@wireddir@/wired.pid"
+PIDFILE="/usr/local/wired/wired.pid"
 
 # The path to your status file
-STATUSFILE="@wireddir@/wired.status"
+STATUSFILE="/usr/local/wired/wired.status"
 
 # The path to your wired binary
-WIRED="@wireddir@/wired"
+WIRED="/usr/local/wired/wired"
 
 # Flags to pass to wired
-WIREDFLAGS="-d @wireddir@"
+WIREDFLAGS="-d /usr/local/wired"
 
 # Begin script
 PROG=$(basename $0)

@@ -296,6 +296,7 @@ void wd_server_apply_settings(wi_set_t *changes) {
 
 
 void wd_server_cleanup(void) {
+	
 	if(wi_config_bool_for_name(wd_config, WI_STR("map port"))) {
 		wd_portmap_unmap_natpmp();
 		wd_portmap_unmap_upnp();

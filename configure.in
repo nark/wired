@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script
-AC_INIT([wired], [2.0], [axel@zankasoftware.com])
+AC_INIT([wired], [2.0], [dev@read-write.fr])
 AC_PREREQ([2.57])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])

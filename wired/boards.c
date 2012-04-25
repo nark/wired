@@ -123,7 +123,7 @@ void wd_boards_initialize(void) {
 										 wi_uuid_string(wi_uuid()),
 										 WI_STR("General"),
 										 WI_STR("Welcome to Wired"),
-										 WI_STR("Welcome to your Wired server. To learn more about administrating your server, please see the [url=http://www.zankasoftware.com/wired/manual/]manual[/url]."),
+										 WI_STR("Welcome to your Wired server. To learn more about administrating your server, please have a look to the [url=http://www.read-write.fr/wired/wiki/]wiki[/url]."),
 										 wi_date_sqlite3_string(wi_date()),
 										 WI_STR("nark"),
 										 WI_STR("admin"),

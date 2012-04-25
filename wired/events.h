@@ -35,6 +35,7 @@ void									wd_events_initialize(void);
 
 wi_boolean_t							wd_events_reply_first_time(wd_user_t *, wi_p7_message_t *);
 wi_boolean_t							wd_events_reply_events(wi_date_t *, wi_uinteger_t, wi_uinteger_t, wd_user_t *, wi_p7_message_t *);
+wi_boolean_t							wd_events_delete_events();
 
 void									wd_events_add_event(wi_string_t *, wd_user_t *, ...);
 

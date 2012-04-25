@@ -48,6 +48,8 @@
 
 #define WD_TRANSFER_BUFFER_SIZE				16384
 
+#define WD_TRANSFERS_TIMEOUT				30.0
+
 
 enum _wd_transfers_statistics_type {
 	WD_TRANSFER_STATISTICS_ADD,
@@ -291,7 +293,7 @@ static wi_boolean_t wd_transfers_wait_until_ready(wd_transfer_t *transfer, wd_us
 				if(wi_p7_message_get_uint32_for_name(message, &transaction, WI_STR("wired.transaction")))
 					wi_p7_message_set_uint32_for_name(reply, transaction, WI_STR("wired.transaction"));
 				
-				if(!wd_user_write_message(user, 30.0, reply)) {
+				if(!wd_user_write_message(user, WD_TRANSFERS_TIMEOUT, reply)) {
 					wi_log_error(WI_STR("Could not write message \"%@\" to %@: %m"),
 						wi_p7_message_name(reply), wd_user_identifier(user));
 					
@@ -324,7 +326,7 @@ static wi_boolean_t wd_transfers_run_download(wd_transfer_t *transfer, wd_user_t
 	if(wi_p7_message_get_uint32_for_name(message, &transaction, WI_STR("wired.transaction")))
 		wi_p7_message_set_uint32_for_name(reply, transaction, WI_STR("wired.transaction"));
 
-	if(!wd_user_write_message(user, 30.0, reply)) {
+	if(!wd_user_write_message(user, WD_TRANSFERS_TIMEOUT, reply)) {
 		wi_log_error(WI_STR("Could not write message \"%@\" to %@: %m"),
 			wi_p7_message_name(reply), wd_user_identifier(user));
 
@@ -361,14 +363,14 @@ static wi_boolean_t wd_transfers_run_upload(wd_transfer_t *transfer, wd_user_t *
 	if(wi_p7_message_get_uint32_for_name(message, &transaction, WI_STR("wired.transaction")))
 		wi_p7_message_set_uint32_for_name(reply, transaction, WI_STR("wired.transaction"));
 	
-	if(!wd_user_write_message(user, 30.0, reply)) {
+	if(!wd_user_write_message(user, WD_TRANSFERS_TIMEOUT, reply)) {
 		wi_log_error(WI_STR("Could not write message \"%@\" to %@: %m"),
 			wi_p7_message_name(reply), wd_user_identifier(user));
 
 		return false;
 	}
 	
-	reply = wd_user_read_message(user, 30.0);
+	reply = wd_user_read_message(user, WD_TRANSFERS_TIMEOUT);
 	
 	if(!reply) {
 		wi_log_warn(WI_STR("Could not read message from %@ while waiting for upload: %m"),
@@ -603,11 +605,13 @@ void wd_transfers_remove_user(wd_user_t *user, wi_boolean_t removingallusers) {
 			transfer = WI_ARRAY(wd_transfers, i);
 			
 			if(wi_is_equal(key, transfer->key)) {
-				wd_user_set_state(transfer->user, WD_USER_DISCONNECTED);
-			
+
+				//wd_user_set_state(transfer->user, WD_USER_DISCONNECTED);
+				
 				if(transfer->state == WD_TRANSFER_RUNNING) {
 					if(wi_condition_lock_lock_when_condition(transfer->finished_lock, 1, 1.0))
 						wi_condition_lock_unlock(transfer->finished_lock);
+					
 				} else {
 					wi_mutable_array_remove_data_at_index(wd_transfers, i);
 					
@@ -1006,12 +1010,12 @@ static wi_boolean_t wd_transfer_download(wd_transfer_t *transfer) {
 			state			= wi_socket_wait_descriptor(sd, 0.1, false, true);
 			
 			if(state == WI_SOCKET_TIMEOUT) {
-				if(wi_time_interval() - timeout >= 30.0)
+				if(wi_time_interval() - timeout >= WD_TRANSFERS_TIMEOUT)
 					break;
 			}
 		} while(state == WI_SOCKET_TIMEOUT && user_state == WD_USER_LOGGED_IN);
 
-		if(state == WI_SOCKET_ERROR || wi_time_interval() - timeout >= 30.0) {
+		if(state == WI_SOCKET_ERROR || wi_time_interval() - timeout >= WD_TRANSFERS_TIMEOUT) {
 			wi_log_error(WI_STR("Could not wait for download to %@: %@"),
 				wd_user_identifier(transfer->user),
 				(state == WI_SOCKET_ERROR) ? wi_error_string() : WI_STR("Timed out"));
@@ -1035,7 +1039,7 @@ static wi_boolean_t wd_transfer_download(wd_transfer_t *transfer) {
 				: (wi_file_offset_t) readbytes;
 		}
 		
-		if(!wi_p7_socket_write_oobdata(p7_socket, 30.0, buffer, sendbytes)) {
+		if(!wi_p7_socket_write_oobdata(p7_socket, WD_TRANSFERS_TIMEOUT, buffer, sendbytes)) {
 			wi_log_error(WI_STR("Could not write download to %@: %m"),
 				wd_user_identifier(transfer->user));
 			
@@ -1064,7 +1068,7 @@ static wi_boolean_t wd_transfer_download(wd_transfer_t *transfer) {
 								interval,
 								speedinterval);
 		
-		if(interval - speedinterval > 30.0) {
+		if(interval - speedinterval > WD_TRANSFERS_TIMEOUT) {
 			speedbytes = 0;
 			speedinterval = interval;
 		}
@@ -1157,12 +1161,12 @@ static wi_boolean_t wd_transfer_upload(wd_transfer_t *transfer) {
 			state			= wi_socket_wait_descriptor(sd, 0.1, true, false);
 			
 			if(state == WI_SOCKET_TIMEOUT) {
-				if(wi_time_interval() - timeout >= 30.0)
+				if(wi_time_interval() - timeout >= WD_TRANSFERS_TIMEOUT)
 					break;
 			}
 		} while(state == WI_SOCKET_TIMEOUT && user_state == WD_USER_LOGGED_IN);
 		
-		if(state == WI_SOCKET_ERROR || wi_time_interval() - timeout >= 30.0) {
+		if(state == WI_SOCKET_ERROR || wi_time_interval() - timeout >= WD_TRANSFERS_TIMEOUT) {
 			wi_log_error(WI_STR("Could not wait for upload from %@: %@"),
 				wd_user_identifier(transfer->user),
 				(state == WI_SOCKET_ERROR) ? wi_error_string() : WI_STR("Timed out"));
@@ -1176,7 +1180,7 @@ static wi_boolean_t wd_transfer_upload(wd_transfer_t *transfer) {
 			break;
 		}
 		
-		readbytes = wi_p7_socket_read_oobdata(p7_socket, 30.0, &buffer);
+		readbytes = wi_p7_socket_read_oobdata(p7_socket, WD_TRANSFERS_TIMEOUT, &buffer);
 
 		if(readbytes <= 0) {
 			if(readbytes < 0) {
@@ -1221,7 +1225,7 @@ static wi_boolean_t wd_transfer_upload(wd_transfer_t *transfer) {
 								interval,
 								speedinterval);
 		
-		if(interval - speedinterval > 30.0) {
+		if(interval - speedinterval > WD_TRANSFERS_TIMEOUT) {
 			speedbytes = 0;
 			speedinterval = interval;
 		}

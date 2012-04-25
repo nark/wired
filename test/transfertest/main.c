@@ -136,7 +136,7 @@ Options:\n\
     -p password         password\n\
     -u user             user\n\
 \n\
-By Axel Andersson <axel@zankasoftware.com>\n");
+By Axel Andersson <dev@read-write.fr>\n");
 	
 	exit(2);
 }

@@ -123,6 +123,7 @@ static void							wd_message_log_subscribe(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_log_unsubscribe(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_event_get_first_time(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_event_get_events(wd_user_t *, wi_p7_message_t *);
+static void							wd_message_event_delete_events(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_event_subscribe(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_event_unsubscribe(wd_user_t *, wi_p7_message_t *);
 static void							wd_message_settings_get_settings(wd_user_t *, wi_p7_message_t *);
@@ -223,6 +224,7 @@ void wd_messages_initialize(void) {
 	WD_MESSAGE_HANDLER(WI_STR("wired.log.unsubscribe"), wd_message_log_unsubscribe);
 	WD_MESSAGE_HANDLER(WI_STR("wired.event.get_first_time"), wd_message_event_get_first_time);
 	WD_MESSAGE_HANDLER(WI_STR("wired.event.get_events"), wd_message_event_get_events);
+	WD_MESSAGE_HANDLER(WI_STR("wired.event.delete_events"), wd_message_event_delete_events);
 	WD_MESSAGE_HANDLER(WI_STR("wired.event.subscribe"), wd_message_event_subscribe);
 	WD_MESSAGE_HANDLER(WI_STR("wired.event.unsubscribe"), wd_message_event_unsubscribe);
 	WD_MESSAGE_HANDLER(WI_STR("wired.settings.get_settings"), wd_message_settings_get_settings);
@@ -2935,6 +2937,11 @@ static void wd_message_event_get_events(wd_user_t *user, wi_p7_message_t *messag
 	wd_events_reply_events(fromtime, numberofdays, lasteventcount, user, message);
 }
 
+
+static void wd_message_event_delete_events(wd_user_t *user, wi_p7_message_t *message) {
+	
+	wd_user_reply_okay(user, message);
+}
 
 
 static void wd_message_event_subscribe(wd_user_t *user, wi_p7_message_t *message) {
