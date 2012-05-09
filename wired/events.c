@@ -34,10 +34,11 @@
 #include "main.h"
 #include "server.h"
 #include "users.h"
+#include "settings.h"
 
 static void								wd_events_create_tables(void);
 static wi_boolean_t						wd_events_convert_events(wi_string_t *);
-
+static void								wd_events_delete_older_events(void);
 
 
 void wd_events_initialize(void) {
@@ -89,23 +90,17 @@ wi_boolean_t wd_events_reply_events(wi_date_t *fromtime, wi_uinteger_t numberofd
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*event, *parameters, *time, *nick, *login, *ip;
     wi_string_t                 *sqlite_time, *sqlite_later_time;
-    wi_time_interval_t			interval;
-	
+	wi_date_t 					*later_date;
+	wi_time_interval_t			interval;
+
 	if(fromtime) {
         sqlite_time = wi_date_sqlite3_string(fromtime);
         
-//        wi_log_info(WI_STR("time: %@"), sqlite_time);
-//        wi_log_info(WI_STR("numberofdays: %d"), numberofdays);
-        
 		if(numberofdays > 0) {
 			
-			interval			= wi_date_time_interval(fromtime) + (numberofdays * 24 * 3600);
-			
-			wi_date_t *later_date = wi_date_with_time_interval(interval);
-			wi_log_info(WI_STR("fromtime: %@"), fromtime);
-			wi_log_info(WI_STR("later_date: %@"), later_date);
-			
-			sqlite_later_time	= wi_date_sqlite3_string(later_date);
+			interval				= wi_date_time_interval(fromtime) + (numberofdays * 24 * 3600);
+			later_date 				= wi_date_with_time_interval(interval);
+			sqlite_later_time		= wi_date_sqlite3_string(later_date);
 			
 			statement = wi_sqlite3_prepare_statement(wd_database, WI_STR("SELECT event, parameters, time, nick, login, ip "
 																		 "FROM events "
@@ -209,6 +204,8 @@ void wd_events_add_event(wi_string_t *event, wd_user_t *user, ...) {
 	wi_date_t				*date;
 	wd_user_t				*peer;
 	va_list					ap;
+
+	wd_events_delete_older_events();
 	
 	results = wi_sqlite3_execute_statement(wd_database, WI_STR("SELECT event "
 															   "FROM events "
@@ -400,4 +397,51 @@ static wi_boolean_t wd_events_convert_events(wi_string_t *path) {
 		wi_sqlite3_rollback_transaction(wd_database);
 	
 	return result;
+}
+
+
+static void wd_events_delete_older_events(void) {
+	wi_dictionary_t				*results;
+	wi_string_t 				*events_time;
+	wi_date_t 					*date;
+	wi_string_t 				*sqlite_time;
+	wi_time_interval_t			interval, new_interval;
+
+	date 				= wi_date_with_time(time(NULL));
+	events_time 		= wi_config_string_for_name(wd_config, WI_STR("events time"));
+
+	if(!events_time)
+		return;
+
+	if(wi_is_equal(events_time, WI_STR("none")))
+		return;
+
+	else if(wi_is_equal(events_time, WI_STR("dayly")))
+		interval		= (24 * 3600);
+
+	else if(wi_is_equal(events_time, WI_STR("weekly")))
+		interval		= (7 * 24 * 3600);
+
+	else if(wi_is_equal(events_time, WI_STR("monthly")))
+		interval		= (30 * 7 * 24 * 3600);
+
+	else if(wi_is_equal(events_time, WI_STR("yearly")))
+		interval		= (12 * 30 * 7 * 24 * 3600);
+
+	sqlite_time 		= wi_date_sqlite3_string(wi_date_with_time_interval(wi_date_time_interval(date)-interval));
+
+	if(!sqlite_time)
+		return;
+
+	wi_sqlite3_begin_immediate_transaction(wd_database);
+
+	results 			= wi_sqlite3_execute_statement(wd_database, 
+										  			   WI_STR("DELETE FROM events WHERE time <= DATETIME(?)"),
+										  			   sqlite_time,
+										   			   NULL);
+	
+	if(results)
+		wi_sqlite3_commit_transaction(wd_database);
+	else
+		wi_sqlite3_rollback_transaction(wd_database);
 }

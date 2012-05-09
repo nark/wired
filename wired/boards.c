@@ -1765,7 +1765,7 @@ static wd_board_privileges_t * wd_boards_privileges_for_path(wi_string_t *path) 
 	wi_array_t				*array;
 	wi_fs_stat_t			sb;
 	
-	permissionspath = wi_string_by_appending_path_component(path, WI_STR("wired/.permissions"));
+	permissionspath = wi_string_by_appending_path_component(path, WI_STR(".wired/permissions"));
 	
 	if(!wi_fs_stat_path(permissionspath, &sb)) {
 		wi_log_error(WI_STR("Could not open \"%@\": %m"), permissionspath);

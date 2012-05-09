@@ -25,7 +25,7 @@ port = 4871
 map port = no
 
 # Name or id of the user that the server should operate as.
-# (default "nark")
+# (default "wired")
 user = nark
 
 # Name or id of the group that the server should operate as.
@@ -35,10 +35,23 @@ group = daemon
 
 ### DATABASE #############################################################
 
+# If set, snapshots database every 'snapshot time'.
+# (default yes)
+snapshots = yes
+
 # If set, snapshots database after this many seconds. Without it, snapshots
 # will use the default value.
 # (default 86400)
 snapshot time = 86400
+
+
+### EVENTS #############################################################
+
+# Older events will be automatically deleted after 'events time'.
+# Accepted values for 'events time' are: none, dayly, weekly, monthly, 
+# yearly.
+# (default "none")
+events time = none
 
 
 ### FILES #############################################################
