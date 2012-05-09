@@ -176,12 +176,14 @@ install-wired:
 	@rm -f .update
 
 install-man:
-	$(INSTALL) -m 755 -d $(mandir)/man1/
-	$(INSTALL) -m 644 $(abs_top_srcdir)/man/wiredctl.1 $(mandir)/man1/
-	$(INSTALL) -m 755 -d $(mandir)/man5/
-	$(INSTALL) -m 644 $(abs_top_srcdir)/man/wired.conf.5 $(mandir)/man5/
-	$(INSTALL) -m 755 -d $(mandir)/man8/
-	$(INSTALL) -m 644 $(abs_top_srcdir)/man/wired.8 $(mandir)/man8/
+	$(INSTALL) -m 755 -o $(WD_USER) -g $(WD_GROUP) -d $(mandir)/
+	
+	$(INSTALL) -m 755 -o $(WD_USER) -g $(WD_GROUP) -d $(mandir)/man1/
+	$(INSTALL) -m 644 -o $(WD_USER) -g $(WD_GROUP) $(abs_top_srcdir)/man/wiredctl.1 $(mandir)/man1/
+	$(INSTALL) -m 755 -o $(WD_USER) -g $(WD_GROUP) -d $(mandir)/man5/
+	$(INSTALL) -m 644 -o $(WD_USER) -g $(WD_GROUP) $(abs_top_srcdir)/man/wired.conf.5 $(mandir)/man5/
+	$(INSTALL) -m 755 -o $(WD_USER) -g $(WD_GROUP) -d $(mandir)/man8/
+	$(INSTALL) -m 644 -o $(WD_USER) -g $(WD_GROUP) $(abs_top_srcdir)/man/wired.8 $(mandir)/man8/
 
 dist:
 	rm -rf wired-$(WD_VERSION)
