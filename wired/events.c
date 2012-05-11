@@ -416,7 +416,7 @@ static void wd_events_delete_older_events(void) {
 	if(wi_is_equal(events_time, WI_STR("none")))
 		return;
 
-	else if(wi_is_equal(events_time, WI_STR("dayly")))
+	else if(wi_is_equal(events_time, WI_STR("daily")))
 		interval		= (24 * 3600);
 
 	else if(wi_is_equal(events_time, WI_STR("weekly")))

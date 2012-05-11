@@ -48,7 +48,7 @@ snapshot time = 86400
 ### EVENTS #############################################################
 
 # Older events will be automatically deleted after 'events time'.
-# Accepted values for 'events time' are: none, dayly, weekly, monthly, 
+# Accepted values for 'events time' are: none, daily, weekly, monthly, 
 # yearly.
 # (default "none")
 events time = none
