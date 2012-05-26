@@ -80,6 +80,8 @@ static void							wd_server_receive_thread(wi_runtime_instance_t *);
 static void							wd_server_log_callback(wi_log_level_t, wi_string_t *);
 static void							wd_server_ping_users(wi_timer_t *);
 
+static void                     	wd_server_database_snapshot_register_with_timer(wi_timer_t *);
+
 
 #ifdef HAVE_CORESERVICES_CORESERVICES_H
 static CFRunLoopRef					wd_cf_runloop;
@@ -102,6 +104,8 @@ static wi_rsa_t						*wd_rsa;
 static wi_mutable_array_t			*wd_log_entries;
 static wi_uinteger_t				wd_max_log_entries;
 
+static wi_timer_t               	*wd_database_snapshot_timer;
+
 wi_uinteger_t						wd_port;
 wi_data_t							*wd_banner;
 wi_p7_spec_t						*wd_p7_spec;
@@ -109,12 +113,19 @@ wi_p7_spec_t						*wd_p7_spec;
 
 
 void wd_server_initialize(void) {
-	wi_string_t		*path;
-	
+	wi_string_t				*path;
+	wi_time_interval_t 		interval;
+	wi_boolean_t			snapshot_enabled;
+
 	wd_ping_timer = wi_timer_init_with_function(wi_timer_alloc(),
 												wd_server_ping_users,
 												WD_SERVER_PING_INTERVAL,
 												true);
+
+	wd_database_snapshot_timer = wi_timer_init_with_function(wi_timer_alloc(),
+	                                            wd_server_database_snapshot_register_with_timer,
+	                                            interval,
+	                                            true);
 
 	wd_rsa = wi_rsa_init_with_bits(wi_rsa_alloc(), 1024);
 	
@@ -149,7 +160,25 @@ void wd_server_initialize(void) {
 
 
 void wd_server_schedule(void) {
+	wi_boolean_t			snapshot_enabled;
+	wi_time_interval_t		interval;
+
 	wi_timer_schedule(wd_ping_timer);
+
+	snapshot_enabled	= wi_config_bool_for_name(wd_config, WI_STR("snapshots"));
+
+	if(snapshot_enabled == false) {
+		if(wd_database_snapshot_timer)
+			wi_timer_invalidate(wd_database_snapshot_timer);
+
+	} else {
+		interval = wi_config_time_interval_for_name(wd_config, WI_STR("snapshot time"));
+
+	    if(interval == 0)
+	        interval = 60*60*24;
+	    
+	    wi_timer_reschedule(wd_database_snapshot_timer, interval);
+	}
 }
 
 
@@ -987,3 +1016,11 @@ void wd_chat_broadcast_message(wd_chat_t *chat, wi_p7_message_t *message) {
 	
 	wi_array_unlock(users);
 }
+
+#pragma mark -
+
+static void wd_server_database_snapshot_register_with_timer(wi_timer_t *timer) {
+    wi_sqlite3_snapshot_database_at_path(wd_database, WI_STR("database.sqlite3.bak"));
+}
+
+

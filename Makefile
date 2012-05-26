@@ -8,7 +8,7 @@ installdir			= $(prefix)/$(wireddir)
 objdir				= obj
 rundir				= run
 mandir				= ${datarootdir}/man
-prefix				= /usr/local/test
+prefix				= /usr/local
 wireddir			= wired
 
 WD_VERSION			= 2.0
