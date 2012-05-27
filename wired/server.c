@@ -117,6 +117,8 @@ void wd_server_initialize(void) {
 	wi_time_interval_t 		interval;
 	wi_boolean_t			snapshot_enabled;
 
+	interval = 86400;
+
 	wd_ping_timer = wi_timer_init_with_function(wi_timer_alloc(),
 												wd_server_ping_users,
 												WD_SERVER_PING_INTERVAL,

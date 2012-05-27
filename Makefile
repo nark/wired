@@ -3,13 +3,13 @@
 abs_top_srcdir		= /Users/nark/Development/Me/Cocoa/Wired/wired/wired
 datarootdir			= ${prefix}/share
 exec_prefix			= ${prefix}
-fake_prefix			= ${prefix}
+fake_prefix			= /Library
 installdir			= $(prefix)/$(wireddir)
 objdir				= obj
 rundir				= run
 mandir				= ${datarootdir}/man
-prefix				= /usr/local
-wireddir			= wired
+prefix				= /Users/nark/Library/Developer/Xcode/DerivedData/Wired_Server-ebfhwvynhgzzztbnphqqmycdvynt/Build/Products/Debug/
+wireddir			= Wired
 
 WD_VERSION			= 2.0
 WD_MAINTAINER		= 0
