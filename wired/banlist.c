@@ -57,9 +57,7 @@ wi_boolean_t wd_banlist_ip_is_banned(wi_string_t *ip, wi_date_t **expiration_dat
 	wi_sqlite3_statement_t		*statement;
 	wi_dictionary_t				*results;
 	wi_runtime_instance_t		*instance;
-    wi_date_t                   *now;
     wi_date_t                   *date;
-    wi_time_interval_t          interval;
     wi_boolean_t                ret;
     
     // delete expired ban item

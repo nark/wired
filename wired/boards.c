@@ -508,7 +508,7 @@ wi_boolean_t wd_boards_rename_board(wi_string_t *oldboard, wi_string_t *newboard
 	wd_board_privileges_t       *privileges;
     wi_string_t                 *old_subboard, *new_subboard;
     wi_array_t                  *old_subboards, *new_subboards;
-    int                         i;
+    unsigned int                 i;
     
     old_subboards = wi_mutable_array();
 	new_subboards = wi_mutable_array();
