@@ -458,15 +458,19 @@ wi_boolean_t wd_index_search(wi_string_t *query, wd_user_t *user, wi_p7_message_
 		account				= wd_user_account(user);
 		accountpath			= wd_account_files(account);
 		accountpathlength	= accountpath ? wi_string_length(accountpath) : 0;
-		string				= wi_mutable_copy(query);
-		
+		string 				= wi_mutable_string();
+
+		wi_mutable_string_set_string(string, query);
+
 		if(accountpathlength == 1)
 			accountpathlength--;
-		
-		wi_mutable_string_replace_string_with_string(string, WI_STR("\\"), WI_STR("\\\\"), 0);
-		wi_mutable_string_replace_string_with_string(string, WI_STR("%"), WI_STR("\\%"), 0);
-		wi_mutable_string_replace_string_with_string(string, WI_STR("_"), WI_STR("\\_"), 0);
-		
+
+		// Seems using more than two times the wi_mutable_string_replace_string_with_string function causes memory troubles
+		// '%' character escaping is disabled for the moment, waiting for a fix
+		// wi_mutable_string_replace_string_with_string(string, WI_STR("\\"), WI_STR("\\\\"), 0);
+		// wi_mutable_string_replace_string_with_string(string, WI_STR("_"), WI_STR("\\_"), 0);
+		// wi_mutable_string_replace_string_with_string(string, WI_STR("%"), WI_STR("\\%"), 0);
+
 		if(accountpath) {
 			statement = wi_sqlite3_prepare_statement(wd_database,
 													 wi_string_with_format(WI_STR("SELECT name, virtual_path, real_path, alias "
