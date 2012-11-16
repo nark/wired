@@ -117,7 +117,7 @@ void wd_server_initialize(void) {
 	wi_time_interval_t 		interval;
 	wi_boolean_t			snapshot_enabled;
 
-	interval = 86400;
+	interval = 60*60*24;
 
 	wd_ping_timer = wi_timer_init_with_function(wi_timer_alloc(),
 												wd_server_ping_users,
@@ -997,7 +997,6 @@ void wd_broadcast_message(wi_p7_message_t *message) {
 	
 	wi_dictionary_unlock(wd_users);
 }
-
 
 
 void wd_chat_broadcast_message(wd_chat_t *chat, wi_p7_message_t *message) {

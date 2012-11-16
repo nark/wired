@@ -894,6 +894,13 @@ wi_boolean_t wd_accounts_delete_group(wd_account_t *account, wd_user_t *user, wi
 
 
 void wd_accounts_update_login_time(wd_account_t *account) {
+	wi_string_t 	*name;
+
+	name = wd_account_name(account);
+
+	if(!name)
+		return;
+
 	if(!wi_sqlite3_execute_statement(wd_database, WI_STR("UPDATE users SET login_time = DATETIME() WHERE name = ?"),
 									 wd_account_name(account),
 									 NULL)) {

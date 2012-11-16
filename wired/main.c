@@ -353,7 +353,7 @@ By Rafaël Warnault <%s>\n", WD_BUGREPORT);
 
 
 static void wd_version(void) {
-	fprintf(stderr, "Wired %s (%x)\n", WD_VERSION, WI_REVISION);
+	fprintf(stderr, "Wired %s (%s)\n", WD_VERSION, WI_REVISION);
 
 	exit(2);
 }
