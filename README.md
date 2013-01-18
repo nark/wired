@@ -1,10 +1,10 @@
-# WELCOME
+# Wired Server 2.0
 
 Wired Server is BBS-oriented server for UNIX-based operating system. It uses libwired and provide an implementation of the Wired 2.0 protocol. This project is a fork of the original Wired Server developed by Axel Andersson at [Zanka Software](http://zankasoftware.com/). 
 
 ### Requirements
 
-This program is mainly tested on Debian/Ubuntu distribution and Mac OS X. The source code is under BSD license and is totally free for use with respect of its attributed license.
+This program is mainly tested on Debian/Ubuntu Linux distributions, FreeBSD and Mac OS X. The source code is under BSD license and is totally free for use with respect of its attributed license.
 
 To install the Wired server, you need the following prerequisites:
 
@@ -27,9 +27,7 @@ Then move to the cloned package:
 
 ##### 2. Download submodules:
 
-`git submodule init`
-
-`git submodule update`
+`git submodule update --init --recursive`
 
 Check that the "libwired" directory was not empty.
 
@@ -49,11 +47,11 @@ Use `./configure --help` to show more options.
 
 ##### 4. Compile source code:
 
-`make` or `gmake`
+`make` or `gmake` on BSD-like systems
 
 ##### 5. If make is successful, install the software:
 
-`make install` or `gmake install`
+`make install` or `gmake install` on BSD-like systems
 
 This will require write permissions to `/usr/local/wired`, or whatever directory you set as the prefix above.
 
