@@ -63,3 +63,7 @@ To start an installed Wired server, run:
 `/usr/local/wired/wiredctl start`
 
 By default a user with the login "admin" and no password is created.
+
+### Getting More
+
+If you are interested in the Wired project, check the Wired Wiki at [http://www.read-write.fr/wired/wiki/](http://www.read-write.fr/wired/wiki/)
