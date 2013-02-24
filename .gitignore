@@ -11,6 +11,10 @@ DerivedData/*
 *.com.apple.timemachine.supported
 profile
 
+# autotool
+config.status
+config.log
+
 # project related
 doc/*
 libwired/
