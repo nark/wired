@@ -211,8 +211,8 @@ static void wd_index_thread(wi_runtime_instance_t *argument) {
 		if(!wi_sqlite3_execute_statement(wd_database, WI_STR("DELETE FROM `index`"), NULL))
 			wi_log_error(WI_STR("Could not execute database statement: %m"));
 		
-		if(!wi_sqlite3_execute_statement(wd_database, WI_STR("PRAGMA synchronous=OFF"), NULL))
-			wi_log_error(WI_STR("Could not execute database statement: %m"));
+		// if(!wi_sqlite3_execute_statement(wd_database, WI_STR("PRAGMA synchronous=OFF"), NULL))
+		// 	wi_log_error(WI_STR("Could not execute database statement: %m"));
 		
 		wd_index_index_path(wi_string_by_resolving_aliases_in_path(wd_files), NULL);
 		
@@ -229,8 +229,8 @@ static void wd_index_thread(wi_runtime_instance_t *argument) {
 			wd_index_files_size,
 			wi_time_interval() - interval);
 		
-		if(!wi_sqlite3_execute_statement(wd_database, WI_STR("PRAGMA synchronous=ON"), NULL))
-			wi_log_error(WI_STR("Could not execute database statement: %m"));
+		// if(!wi_sqlite3_execute_statement(wd_database, WI_STR("PRAGMA synchronous=ON"), NULL))
+		// 	wi_log_error(WI_STR("Could not execute database statement: %m"));
 		
 		if(!wi_sqlite3_execute_statement(wd_database, WI_STR("DELETE FROM index_metadata"), NULL))
 			wi_log_error(WI_STR("Could not execute database statement: %m"));

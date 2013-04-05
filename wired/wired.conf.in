@@ -63,7 +63,7 @@ files = files
 # If set, indexes files after this many seconds. Without it, no
 # automatic indexing takes place.
 # (default 14400)
-index time = 14400
+# index time = 14400
 
 
 ### TRANSFERS #########################################################
