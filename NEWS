@@ -1,8 +1,85 @@
 NEWS
 ====
 
-2.0
--
+2.0b (77)
+
+- Add background threads for Import/Export settings function to support large file operations [OSX]
+- Fix Import/Export settings from the Wired Server interface [OSX]
+- Fix build number formatting in Server Infos
+- Fix broken database snapshots
+
+
+2.0b (76)
+
+- Fix the launched issue when Wired Server daemon always auto-star at system boot (maybe you will have to manually remove the "fr.read-write.WiredServer" entry in /var/db/launchd.db/com.apple.launchd.peruser.XXX/overrides.plist file, where XXX is you user id (generally 501) to re-synchronize launchd services) [OSX]
+- Fix server crash on Files search with "_" and "%" characters. These characters are no longer escaped and they will be ignored.
+
+
+2.0b (75)
+
+- Fix the server port which cannot be changed from the GUI [OSX]
+- Fix the 32/64bits server compilation script, again, for Mountain Lion [OSX]
+- Enhance the auto-update script [OSX]
+
+
+2.0b (72)
+
+- Fix undesired server restart at Wired Server app launch [OSX]
+
+
+2.0b (71)
+
+- Fix the thread subject for event wired.event.board.got_thread
+- Fix the Launch Wired Automatically issue [OSX]
+- Fix the Intel 32bits compilation issue (Core 1 Duo processor) [OSX]
+
+
+2.0b (70)
+
+- Add Re-index button into the GUI [OSX]
+- Add controls for Snapshots settings into the GUI [OSX]
+- Add controls for Events settings into the GUI [OSX]
+- Add an 'snapshots' setting to enable/disable snapshots in wired.conf
+- Add an 'events time' setting to limit event storage in wired.conf
+- Fix automatically reindex server files following 'index time' setting
+- Fix lack of index update when the files root path of the server changes
+- Fix an issue when importing Zanka boards permissions
+- Add full support for 32/64 bits architectures [OSX]
+
+
+2.0b (68)
+
+- Rewritten as a stand-alone application rather than a Preference Pane [OSX]
+- Add a minimal Status Menu helper installed as a Login Item [OSX]
+- Fix wiredctl and Wired root path issue in Wired compilation
+- Fix Files reload form the GUI: server restart needed is not more needed [OSX]
+- Fix corrupted password (double SHA1) in Create New Admin User feature [OSX]
+- Fix a (hidden-)crash when server is stopped while clients are running transfers
+- Wired Server is now built using Xcode 4.3 [OSX]
+
+2.0b (54)
+- Add a database snapshot system (see snapshot time in wired.conf)
+- Fix board rename for an infinite loop case
+
+2.0b (53)
+- Fix board move and rename where threads was not properly updated
+
+2.0b (51)
+- Fix board move where sub-boards was not properly updated
+- Fix board rename where sub-boards was not properly updated
+- Fix ban list issue when an unlimited banned IP tries to connect
+
+2.0b (49)
+- Fix board and threads moving issues 
+
+2.0b (48)
+- Add board permission management
+- Fix the auto-update release logs
+- Fix topic date which resets to 1970 when server restart
+
+
+
+
 
 1.3.3
 - Increase performance for counting number of files inside a directory

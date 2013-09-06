@@ -32,6 +32,11 @@ user = nark
 # (default "daemon")
 group = daemon
 
+# Ask the server to accept or not incoming connections
+# that do not use an SSL encryption cipher.
+# (default yes)
+force encryption = yes
+
 
 ### DATABASE #############################################################
 

@@ -652,8 +652,17 @@ static void wd_server_accept_thread(wi_runtime_instance_t *argument) {
 	wi_p7_socket_set_private_key(p7_socket, wd_rsa);
 	
 	user = wd_user_with_p7_socket(p7_socket);
-	
+
 	if(wi_p7_socket_accept(p7_socket, 30.0, WI_P7_ALL)) {
+		if(wi_config_bool_for_name(wd_config, WI_STR("force encryption"))) {
+#ifdef WI_RSA
+			if(!WI_P7_ENCRYPTION_ENABLED(wi_p7_socket_options(p7_socket))) {
+				wi_log_error(WI_STR("Could not accept a non-encrypted connection (have a look to 'force encryption' setting)"), ip);
+				goto end;
+			}
+#endif	
+		}
+
 		wd_users_add_user(user);
 		wd_messages_loop_for_user(user);
 	} else {
@@ -664,7 +673,8 @@ static void wd_server_accept_thread(wi_runtime_instance_t *argument) {
 		if(wi_error_domain() == WI_ERROR_DOMAIN_LIBWIRED && wi_error_code() == WI_ERROR_P7_AUTHENTICATIONFAILED)
 			wd_events_add_event(WI_STR("wired.event.user.login_failed"), user, NULL);
 	}
-	
+
+end:
 	wi_release(pool);
 }
 

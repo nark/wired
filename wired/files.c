@@ -62,7 +62,7 @@ struct _wd_files_privileges {
 	wi_uinteger_t										mode;
 };
 
-
+static void												wd_files_reply_list_thread(wi_runtime_instance_t *);
 static void												wd_files_delete_path_callback(wi_string_t *);
 static void												wd_files_move_path_copy_callback(wi_string_t *, wi_string_t *);
 static void												wd_files_move_path_delete_callback(wi_string_t *);
@@ -140,7 +140,38 @@ void wd_files_schedule(void) {
 
 #pragma mark -
 
-wi_boolean_t wd_files_reply_list(wi_string_t *path, wi_boolean_t recursive, wd_user_t *user, wi_p7_message_t *message) {
+wi_boolean_t wd_files_reply_list(wi_string_t *path, wi_boolean_t recursive, wd_user_t *user, wi_p7_message_t *message) {	
+	wi_array_t *array = wi_array_init_with_data(wi_array_alloc(),
+		path,
+		user,
+		message,
+		wi_number_with_bool(recursive),
+		(void *) NULL);
+	
+	wi_boolean_t result = wi_thread_create_thread(wd_files_reply_list_thread, array);
+	
+	if(!result) {
+		wi_log_error(WI_STR("Could not create a list thread: %m"));
+		wd_user_reply_internal_error(user, wi_error_string(), message);
+
+		return false;
+	}
+
+	wi_release(array);
+	
+	return true;
+}
+
+
+
+static void wd_files_reply_list_thread(wi_runtime_instance_t *argument) {
+	wi_pool_t					*pool;
+	wi_array_t					*array = argument;
+	wi_string_t 				*path;
+	wd_user_t 					*user;
+	wi_p7_message_t 			*message;
+	wi_boolean_t 				recursive;
+
 	wi_p7_message_t				*reply;
 	wi_string_t					*realpath, *filepath, *resolvedpath, *virtualpath;
 	wi_fsenumerator_t			*fsenumerator;
@@ -155,17 +186,24 @@ wi_boolean_t wd_files_reply_list(wi_string_t *path, wi_boolean_t recursive, wd_u
 	wd_file_type_t				type, pathtype;
 	wi_boolean_t				root, upload, alias, readable, writable;
 	uint32_t					device;
-	
-	root		= wi_is_equal(path, WI_STR("/"));
-	realpath	= wi_string_by_resolving_aliases_in_path(wd_files_real_path(path, user));
-	account		= wd_user_account(user);
-	pathtype	= wd_files_type(realpath);
+
+	pool			= wi_pool_init(wi_pool_alloc());
+
+	path			= WI_ARRAY(array, 0);
+	user			= WI_ARRAY(array, 1);
+	message			= WI_ARRAY(array, 2);
+	recursive		= wi_number_bool(WI_ARRAY(array, 3));
+
+	root			= wi_is_equal(path, WI_STR("/"));
+	realpath		= wi_string_by_resolving_aliases_in_path(wd_files_real_path(path, user));
+	account			= wd_user_account(user);
+	pathtype		= wd_files_type(realpath);
 	
 	if(!wi_fs_stat_path(realpath, &dsb)) {
 		wi_log_error(WI_STR("Could not read info for \"%@\": %m"), realpath);
 		wd_user_reply_file_errno(user, message);
 		
-		return false;
+		return;
 	}
 	
 	depthlimit		= wd_account_file_recursive_list_depth_limit(account);
@@ -175,7 +213,7 @@ wi_boolean_t wd_files_reply_list(wi_string_t *path, wi_boolean_t recursive, wd_u
 		wi_log_error(WI_STR("Could not open \"%@\": %m"), realpath);
 		wd_user_reply_file_errno(user, message);
 		
-		return false;
+		return;
 	}
 
 	pathlength = wi_string_length(realpath);
@@ -329,8 +367,10 @@ wi_boolean_t wd_files_reply_list(wi_string_t *path, wi_boolean_t recursive, wd_u
 	
 	wd_user_reply_message(user, reply, message);
 	
-	return true;
+	wi_release(pool);
 }
+
+
 
 
 
