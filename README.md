@@ -13,25 +13,29 @@ To install the Wired server, you need the following prerequisites:
 * **zlib**: [http://zlib.net/](http://zlib.net/)
 * **git**: [http://git-scm.com/](http://git-scm.com/)
 
-These are usually distributed with operating systems. If you need more information about installing these requirements on a specific operating system, you should visit this [page](http://www.read-write.fr/wired/wiki/howtos/install_howtos.html).
+These are usually distributed with operating systems.
+
+#### Howto install on:
+
+Debian 8 (Jessie)
+
+	sudo apt-get install -y build-essential git libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
+
+Debian 9 (Stretch)
+
+	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl1.0-dev zlib1g-dev
+
+CentOS 7
+
+	yum -y install gcc gcc-c++ make git openssl-devel sqlite-devel.x86_64 libxml2-devel.x86_64 zlib-devel.x86_64
 
 ### Getting started
 
 Installing Wired Server from sources will be done using the Autotools standard (configure, make, make install).
 
-##### 1. Get Wired Server sources:
+##### 1. Get Wired Server sources via Terminal (git must be installed!):
 
-* On Linux:
-
-		wget http://www.read-write.fr/wired/zip/wired.tar.gz
-
-* On Mac OSX:
-
-		curl -o http://www.read-write.fr/wired/zip/wired.tar.gz
-		
-Unarchive Wired Server sources:
-
-	tar -xvzf wired.tar.gz
+	git clone https://bitbucket.com/profdrluigi/wired.git wired
 
 Then move to the `wired` directory:
 
@@ -94,7 +98,7 @@ By default a user with the login "admin" and no password is created. Use Wired C
 
 ### Get More
 
-If you are interested in the Wired project, check the Wired Wiki at [http://wired.read-write.fr/wiki/](http://wired.read-write.fr/wiki/)
+If you are interested in the Wired project, check the Wired Wiki at [http://wired.read-write.fr/](http://wired.read-write.fr)
 
 ### Troubleshootings
 
