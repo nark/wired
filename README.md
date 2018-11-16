@@ -35,7 +35,7 @@ Installing Wired Server from sources will be done using the Autotools standard (
 
 ##### 1. Get Wired Server sources via Terminal (git must be installed!):
 
-	git clone https://bitbucket.com/profdrluigi/wired.git wired
+	git clone https://github.com/ProfDrLuigi/wired wired
 
 Then move to the `wired` directory:
 
