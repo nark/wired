@@ -29,6 +29,10 @@ CentOS 7
 
 	yum -y install gcc gcc-c++ make git openssl-devel sqlite-devel.x86_64 libxml2-devel.x86_64 zlib-devel.x86_64
 
+Fedora 27
+
+	yum install make automake gcc gcc-c++ kernel-devel compat-openssl10-devel sqlite-devel libxml2-devel zlib-devel git
+
 ### Getting started
 
 Installing Wired Server from sources will be done using the Autotools standard (configure, make, make install).
