@@ -21,7 +21,7 @@ These are usually distributed with operating systems.
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
 
-**Debian 9 (Stretch)**
+**Debian 9 (Stretch) & Ubuntu**
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl1.0-dev zlib1g-dev
 
