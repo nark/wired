@@ -26,6 +26,7 @@ These are usually distributed with operating systems.
 	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl1.0-dev zlib1g-dev
 
 **Debian 10 (Buster)**
+
 	wget http://security-cdn.debian.org/debian-security/pool/updates/main/o/openssl1.0/libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
 	wget http://security-cdn.debian.org/debian-security/pool/updates/main/o/openssl1.0/libssl1.0-dev_1.0.2s-1~deb9u1_amd64.deb
 	dpkg -i libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
