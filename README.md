@@ -17,11 +17,7 @@ These are usually distributed with operating systems.
 
 #### Howto install on:
 
-**Debian 8 (Jessie)**
-
-	sudo apt-get install -y build-essential git libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
-
-**Debian 9 (Stretch) / Debian 10 (Buster) & Ubuntu**
+**Debian 8/9/10 & Ubuntu**
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
 
