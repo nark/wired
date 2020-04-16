@@ -21,17 +21,9 @@ These are usually distributed with operating systems.
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
 
-**Debian 9 (Stretch) & Ubuntu**
+**Debian 9 (Stretch) / Debian 10 (Buster) & Ubuntu**
 
-	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl1.0-dev zlib1g-dev
-
-**Debian 10 (Buster)**
-
-	wget http://security.debian.org/debian-security/pool/updates/main/o/openssl1.0/libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
-	wget http://security.debian.org/debian-security/pool/updates/main/o/openssl1.0/libssl1.0-dev_1.0.2s-1~deb9u1_amd64.deb
-	dpkg -i libssl1.0.2_1.0.2s-1~deb9u1_amd64.deb
-	dpkg -i libssl1.0-dev_1.0.2s-1~deb9u1_amd64.deb
-	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev zlib1g-dev
+	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
 
 **CentOS 7**
 
@@ -39,7 +31,7 @@ These are usually distributed with operating systems.
 
 **Fedora 27**
 
-	yum install make automake gcc gcc-c++ kernel-devel compat-openssl10-devel sqlite-devel libxml2-devel zlib-devel git
+	yum install make automake gcc gcc-c++ kernel-devel openssl-devel sqlite-devel libxml2-devel zlib-devel git
 
 ### Getting started
 
