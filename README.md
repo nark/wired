@@ -43,6 +43,7 @@ Then move to the `wired` directory:
 
 Initialize and update submodules repositories:
 
+	git clone https://github.com/profdrluigi/libwired libwired
 	git submodule update --init --recursive
 
 Then check that the "libwired" directory was not empty.
