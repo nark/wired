@@ -17,17 +17,13 @@ These are usually distributed with operating systems.
 
 #### Howto install on:
 
-**Debian 8/9/10 & Ubuntu**
+**Debian/Ubuntu**
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
 
-**CentOS 7**
+**CentOS/Fedora**
 
-	yum -y install gcc gcc-c++ make git openssl-devel sqlite-devel.x86_64 libxml2-devel.x86_64 zlib-devel.x86_64
-
-**Fedora 27**
-
-	yum install make automake gcc gcc-c++ kernel-devel openssl-devel sqlite-devel libxml2-devel zlib-devel git
+	sudo yum -y install git openssl-devel sqlite3 libxml2 zlib-devel gcc make
 
 ### Getting started
 
