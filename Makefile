@@ -1,6 +1,6 @@
 # Makefile.in
 
-abs_top_srcdir		= /Users/nark/Development/Me/Cocoa/Wired/wired2/wired
+abs_top_srcdir		= /Users/nark/wired
 datarootdir			= ${prefix}/share
 exec_prefix			= ${prefix}
 fake_prefix			= ${prefix}
@@ -11,7 +11,7 @@ mandir				= ${datarootdir}/man
 prefix				= /usr/local
 wireddir			= wired
 
-WD_VERSION			= 2.0
+WD_VERSION			= 2.5
 WD_MAINTAINER		= 0
 WD_USER				= nark
 WD_GROUP			= daemon
@@ -29,12 +29,12 @@ TRANSFERTESTOBJS	= $(addprefix $(objdir)/transfertest/,$(notdir $(patsubst %.c,%
 DEFS				= -DHAVE_CONFIG_H -DENABLE_STRNATPMPERR -DMINIUPNPC_SET_SOCKET_TIMEOUT
 CC					= gcc
 CFLAGS				= -g -O2
-CPPFLAGS			= -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -I/usr/include/libxml2 -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7
-LDFLAGS				= -L$(rundir)/libwired/lib -L/usr/local/lib
+CPPFLAGS			= -I/usr/local/opt/openssl/include -I/usr/local/include -DWI_PTHREADS -DWI_CORESERVICES -DWI_CARBON -DWI_DIGESTS -DWI_CIPHERS -DWI_SQLITE3 -DWI_RSA -DWI_LIBXML2 -DWI_PLIST -DWI_ZLIB -DWI_P7
+LDFLAGS				= -L$(rundir)/libwired/lib -L/usr/local/opt/openssl/lib -L/usr/local/lib
 LIBS				= -lwired -framework CoreServices -framework Carbon -lsqlite3 -lcrypto -lxml2 -lz
 INCLUDES			= -I$(abs_top_srcdir) -I$(rundir)/libwired/include -I$(abs_top_srcdir)/thirdparty
 
-INSTALL				= /usr/bin/install -c
+INSTALL				= /usr/local/bin/ginstall -c
 COMPILE				= $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
 PREPROCESS			= $(CC) -E $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
 DEPEND				= $(CC) -MM $(INCLUDES)

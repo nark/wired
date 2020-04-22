@@ -1941,7 +1941,7 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 # Get Subversion revision number
 
-	WI_REVISION=$(git describe --always)
+	WI_REVISION=$(cat version)
 
 	if test -z "$WI_REVISION"; then
 		WI_REVISION=0
@@ -1957,7 +1957,7 @@ _ACEOF
 # These are used in the source code
 
 cat >>confdefs.h <<\_ACEOF
-#define WD_VERSION "2.0"
+#define WD_VERSION "2.5"
 _ACEOF
 
 
@@ -1967,7 +1967,7 @@ _ACEOF
 
 
 # These are used in the Makefile
-WD_VERSION="2.0"
+WD_VERSION="2.5"
 
 
 
@@ -10079,5 +10079,6 @@ echo "      Compiler flags: ${CFLAGS}"
 echo "  Preprocessor flags: ${CPPFLAGS}"
 echo "        Linker flags: ${LDFLAGS}"
 echo "           Libraries: ${LIBS}"
+echo "             Version: ${WI_REVISION}"
 
 echo ""

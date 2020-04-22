@@ -62,6 +62,11 @@ To change the default user the installation will write files as, run:
 
 	./configure --with-user=USER
 
+If you installed OpenSSL in a non-standard path, use the following command example as reference:
+
+	env CPPFLAGS=-I/usr/local/opt/openssl/include \
+	     LDFLAGS=-L/usr/local/opt/openssl/lib ./configure
+
 Use `./configure --help` in order to display more options.
 
 ##### 4. Compile source code:

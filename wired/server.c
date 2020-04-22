@@ -129,7 +129,7 @@ void wd_server_initialize(void) {
 	                                            interval,
 	                                            true);
 
-	wd_rsa = wi_rsa_init_with_bits(wi_rsa_alloc(), 1024);
+	wd_rsa = wi_rsa_init_with_bits(wi_rsa_alloc(), 2048);
 	
 	if(!wd_rsa)
 		wi_log_fatal(WI_STR("Could not create RSA key: %m"));
