@@ -3,13 +3,13 @@
 abs_top_srcdir		= /Users/nark/wired
 datarootdir			= ${prefix}/share
 exec_prefix			= ${prefix}
-fake_prefix			= ${prefix}
+fake_prefix			= /Library
 installdir			= $(prefix)/$(wireddir)
 objdir				= obj
 rundir				= run
 mandir				= ${datarootdir}/man
 prefix				= /usr/local
-wireddir			= wired
+wireddir			= Wired
 
 WD_VERSION			= 2.5
 WD_MAINTAINER		= 0

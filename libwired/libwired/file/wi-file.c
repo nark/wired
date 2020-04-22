@@ -571,7 +571,7 @@ wi_boolean_t wi_file_decompress_at_path(wi_file_t *file, wi_string_t *path) {
             strm.next_out = out;
             ret = inflate(&strm, Z_NO_FLUSH);
             
-            if(ret == Z_STREAM_ERROR);  /* state not clobbered */
+            if(ret == Z_STREAM_ERROR)  /* state not clobbered */
             	continue;
 
             switch (ret) {

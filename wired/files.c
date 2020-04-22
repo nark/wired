@@ -1196,7 +1196,7 @@ wi_boolean_t wd_files_set_label(wi_string_t *path, wd_file_label_t label, wd_use
 
 wd_file_label_t wd_files_label(wi_string_t *path) {
 #ifdef HAVE_CORESERVICES_CORESERVICES_H
-	return wi_fs_finder_label_for_path(path);
+	return (wd_file_label_t)wi_fs_finder_label_for_path(path);
 #else
 	wi_runtime_instance_t	*instance;
 	wi_number_t				*label;

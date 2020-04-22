@@ -108,7 +108,7 @@ tracker = wired://wired.read-write.fr/
 # Set this to your external address if you're on the same subnet as the
 # tracker, and you're using private addresses behind a firewall.
 # (no default)
-#ip = 127.0.0.1
+# ip = 127.0.0.1
 
 # If set, enables the tracker.
 # (default "no")

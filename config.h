@@ -83,7 +83,7 @@
 #define WD_GROUP "daemon"
 
 /* Root directory */
-#define WD_ROOT "/usr/local/wired"
+#define WD_ROOT "/Library/Wired"
 
 /* User name */
 #define WD_USER "nark"
