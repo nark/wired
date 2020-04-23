@@ -1,4 +1,4 @@
-# Wired Server 2.0
+# Wired Server 2.5
 
 Wired Server is BBS-oriented server for UNIX-based operating systems. It uses [libwired](https://github.com/nark/libwired) and provide an implementation of the Wired 2.0 protocol. This project is a fork of the original Wired Server developed by Axel Andersson at [Zanka Software](http://zankasoftware.com/).
 
@@ -29,11 +29,16 @@ Run the container:
 
 **Debian/Ubuntu**
 
-	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev autoconf
+	sudo apt-get install -y build-essential autoconf git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
 
-**CentOS/Fedora**
+**CentOS 7**
 
-	sudo yum -y install git openssl-devel sqlite3 libxml2 zlib-devel gcc make autoconf
+    sudo yum -y install git libtool openssl-devel sqlite-devel.x86_64 libxml2-devel zlib-devel autoconf gcc make
+
+**CentOS 8 / Fedora 28/29/30/31 (and probably even older versions of Fedora)**
+
+    sudo yum -y install git libtool openssl-devel sqlite-devel libxml2-devel zlib-devel autoconf gcc make
+
 
 ### Getting started
 
@@ -111,7 +116,7 @@ By default a user with the login "admin" and no password is created. Use Wired C
 
 ### Get More
 
-If you are interested in the Wired project, check the Wired Wiki at [http://wired.read-write.fr/](http://wired.read-write.fr)
+If you are interested in the Wired project, check the Website at [http://wired.read-write.fr/](http://wired.read-write.fr)
 
 ### Troubleshootings
 
