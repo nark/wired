@@ -19,7 +19,7 @@ These are usually distributed with operating systems.
 
 **Debian/Ubuntu**
 
-	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
+	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev autoconf
 
 **CentOS/Fedora**
 
