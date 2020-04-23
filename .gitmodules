@@ -1,0 +1,4 @@
+[submodule "libwired"]
+	path = libwired
+	url = https://github.com/nark/libwired
+	branch = master

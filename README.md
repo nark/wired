@@ -39,12 +39,11 @@ Then move to the `wired` directory:
 
 Initialize and update submodules repositories:
 
-	git submodule update --init --recursive
-	git clone https://github.com/nark/libwired /tmp/libwired
-	cp -rf /tmp/libwired/* libwired/.
-	rm -rf /tmp/libwired
+	git submodule update --init --recursive --remote
 
-Then check that the "libwired" directory was not empty.
+	libwired/bootstrap
+
+Then check that the `libwired` directory was not empty and `configure` file exists.
 
 ##### 3. Run the configuration script:
 

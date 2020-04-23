@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script
-AC_INIT([wired], [2.0], [dev@read-write.fr])
+AC_INIT([wired], [2.5], [dev@read-write.fr])
 AC_PREREQ([2.57])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
@@ -241,5 +241,6 @@ echo "      Compiler flags: ${CFLAGS}"
 echo "  Preprocessor flags: ${CPPFLAGS}"
 echo "        Linker flags: ${LDFLAGS}"
 echo "           Libraries: ${LIBS}"
+echo "             Version: ${WD_VERSION}"
 
 echo ""

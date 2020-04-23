@@ -11,7 +11,7 @@ mandir				= ${datarootdir}/man
 prefix				= /usr/local
 wireddir			= Wired
 
-WD_VERSION			= 2.0
+WD_VERSION			= 2.5
 WD_MAINTAINER		= 0
 WD_USER				= nark
 WD_GROUP			= daemon
