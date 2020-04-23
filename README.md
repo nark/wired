@@ -108,14 +108,14 @@ By default a user with the login "admin" and no password is created. Use Wired C
 
 Pull and run the container:
 
-    docker run -d -p 4871:4871 -v /path/to/files:/files wired2/wired:2.5
+    docker run --name wired -d -p 4871:4871 -v /path/to/yours/files:/files wired2/wired:2.5
 
 * the `-p` option maps the container port (`4871`) to whatever the port you want to use on your host machine. If you want `wired` to be available on another you can use: `10000:4871` and Docker will translate it.
 * the `-v` option maps items of the container file system with your local file system. You can change the first value of the pair to adjust to your server files configuration. Wired Server will look into the `/files` path of the container to index and server your files. 
 
 If you want Docker to start the container automatically for you, add the `--restart always` argument as follow:
 
-    docker run -d --restart always -p 4871:4871 -v /path/to/files:/files wired2/wired:2.5
+    docker run --name wired --restart always -d -p 4871:4871 -v /path/to/yours/files:/files wired2/wired:2.5
 
 Start/stop the container:
 
