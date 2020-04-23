@@ -140,6 +140,14 @@ Build the image locally:
 
     cd wired/
     docker build --tag wired:2.5 .
+    
+Tag the image:
+    
+    docker tag <image_id> wired2/wired:2.5
+    
+Push to Docker Hub:
+    
+    docker push wired2/wired:2.5
 
 ### Get More
 
