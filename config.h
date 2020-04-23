@@ -70,6 +70,9 @@
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "wired"
 
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
+
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "2.0"
 
@@ -89,10 +92,13 @@
 #define WD_USER "nark"
 
 /* Application version */
-#define WD_VERSION "2.5"
+#define WD_VERSION "2.0"
 
 /* Subversion revision */
-#define WI_REVISION "2.5.1"
+#define WI_REVISION "445e831"
+
+/* SQLite does not support backup */
+#define WI_SQLITE_SUPPORTS_BACKUP 1
 
 /* 64-bit ino_t on Darwin */
 #define _DARWIN_USE_64_BIT_INODE 1

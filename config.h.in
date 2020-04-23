@@ -69,6 +69,9 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
@@ -92,6 +95,9 @@
 
 /* Subversion revision */
 #undef WI_REVISION
+
+/* SQLite does not support backup */
+#undef WI_SQLITE_SUPPORTS_BACKUP
 
 /* 64-bit ino_t on Darwin */
 #undef _DARWIN_USE_64_BIT_INODE

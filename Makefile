@@ -1,6 +1,6 @@
 # Makefile.in
 
-abs_top_srcdir		= /Users/nark/wired
+abs_top_srcdir		= /Users/nark/Development/Me/Cocoa/Wired/wired2.5/wired
 datarootdir			= ${prefix}/share
 exec_prefix			= ${prefix}
 fake_prefix			= /Library
@@ -11,7 +11,7 @@ mandir				= ${datarootdir}/man
 prefix				= /usr/local
 wireddir			= Wired
 
-WD_VERSION			= 2.5
+WD_VERSION			= 2.0
 WD_MAINTAINER		= 0
 WD_USER				= nark
 WD_GROUP			= daemon
