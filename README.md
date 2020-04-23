@@ -23,7 +23,7 @@ These are usually distributed with operating systems.
 
 **CentOS/Fedora**
 
-	sudo yum -y install git openssl-devel sqlite3 libxml2 zlib-devel gcc make
+	sudo yum -y install git openssl-devel sqlite3 libxml2 zlib-devel gcc make autoconf
 
 ### Getting started
 
