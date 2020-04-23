@@ -135,6 +135,16 @@ Remove the container:
 
     docker rm wired
     
+It could be useful to backup and restore container files such as `database.sqlite3` or `wired.conf`. You can do that do using the `docker cp` command.
+    
+From container to host:
+    
+    docker cp wired:/user/local/wired/database.sqlite3 /path/to/your/database.sqlite3
+
+From host to container:
+
+    docker cp /path/to/your/database.sqlite3 wired:/user/local/wired/database.sqlite3
+
 ### Get More
 
 If you are interested in the Wired project, check the Website at [http://wired.read-write.fr/](http://wired.read-write.fr)
