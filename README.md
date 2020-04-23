@@ -17,16 +17,6 @@ These are usually distributed with operating systems.
 
 #### Howto install on:
 
-**Docker**
-
-Build the image:
-
-    docker build --tag wired:2.5 .
-    
-Run the container:
-
-    docker run --publish 4875:4871 --name wired wired:2.5
-
 **Debian/Ubuntu**
 
 	sudo apt-get install -y build-essential autoconf git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
@@ -114,6 +104,31 @@ To start an installed Wired server, run:
 
 By default a user with the login "admin" and no password is created. Use Wired Client or Wire to connect to your newly installed Wired Server. 
 
+### Running on Docker
+
+Build the image:
+
+    cd wired/
+    docker build --tag wired:2.5 .
+
+Run the container (first time):
+
+    docker run  -d -p 4871:4871 \ 
+                -v /path/to/your/files:/files \ 
+                --name wired wired:2.5
+
+* the `-p` option maps the container port (`4871`) to whatever the port you want to use on your host machine. If you want `wired` to be available on another you can use: `10000:4871` and Docker will translate it.
+* the `-v` option maps items of the container file system with your local file system. You can change the first value of the pair to adjust to your server files configuration.
+
+Start/stop the container:
+
+    docker stop wired
+    docker start wired
+    
+Remove the container:
+
+    docker rm wired
+    
 ### Get More
 
 If you are interested in the Wired project, check the Website at [http://wired.read-write.fr/](http://wired.read-write.fr)
