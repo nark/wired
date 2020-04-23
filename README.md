@@ -17,6 +17,16 @@ These are usually distributed with operating systems.
 
 #### Howto install on:
 
+**Docker**
+
+Build the image:
+
+    docker build --tag wired:2.5 .
+    
+Run the container:
+
+    docker run --publish 4875:4871 --name wired wired:2.5
+
 **Debian/Ubuntu**
 
 	sudo apt-get install -y build-essential git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev autoconf
