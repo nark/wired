@@ -638,7 +638,9 @@ static void wd_server_accept_thread(wi_runtime_instance_t *argument) {
 	wi_socket_t			*socket = argument;
 	wi_string_t			*ip;
 	wd_user_t			*user;
-	
+    wi_integer_t        cipher;
+    wi_p7_options_t     options;
+    
 	pool = wi_pool_init(wi_pool_alloc());
 	
 	ip = wi_address_string(wi_socket_address(socket));
@@ -651,9 +653,16 @@ static void wd_server_accept_thread(wi_runtime_instance_t *argument) {
 	p7_socket = wi_autorelease(wi_p7_socket_init_with_socket(wi_p7_socket_alloc(), socket, wd_p7_spec));
 	wi_p7_socket_set_private_key(p7_socket, wd_rsa);
 	
+    options = WI_P7_ALL;
 	user = wd_user_with_p7_socket(p7_socket);
-
-	if(wi_p7_socket_accept(p7_socket, 30.0, WI_P7_ALL)) {
+    cipher = wi_config_integer_for_name(wd_config, WI_STR("preferred cipher"));
+    
+    if(cipher != -1) {
+        //wi_log_debug(WI_STR("Enforce preferred encryption cipher: %ld"), cipher);
+        options = (WI_P7_COMPRESSION_DEFLATE | (1 << (cipher + 1)) | WI_P7_CHECKSUM_SHA1 | WI_P7_CHECKSUM_SHA256 | WI_P7_CHECKSUM_SHA512);
+    }
+    
+	if(wi_p7_socket_accept(p7_socket, 30.0, options)) {
 		if(wi_config_bool_for_name(wd_config, WI_STR("force encryption"))) {
 #ifdef WI_RSA
 			if(!WI_P7_ENCRYPTION_ENABLED(wi_p7_socket_options(p7_socket))) {

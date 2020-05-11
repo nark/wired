@@ -37,6 +37,31 @@ group = daemon
 # (default yes)
 force encryption = yes
 
+# Ask the server to only accept connections from
+# the preferred cipher. If -1 is selected, all encryption
+# ciphers are accepted.
+#
+# Supported ciphers:
+#
+# ALL                = -1
+# RSA-AES128-SHA1    =  0 (deprecated)
+# RSA-AES192-SHA1    =  1 (deprecated)
+# RSA-AES256-SHA1    =  2 (legacy)
+# RSA-BF128-SHA1     =  3 (deprecated)
+# RSA-3DES192-SHA1   =  4 (deprecated)
+# RSA-AES128-SHA256  =  5 (deprecated)
+# RSA-AES192-SHA256  =  6 (recommended)
+# RSA-AES256-SHA256  =  7 (recommended)
+# RSA-BF128-SHA256   =  8 (deprecated)
+# RSA-3DES192-SHA256 =  9 (deprecated)
+# RSA-AES128-SHA512  = 10 (deprecated)
+# RSA-AES192-SHA512  = 11 (recommended)
+# RSA-AES256-SHA512  = 12 (recommended)
+# RSA-BF128-SHA512   = 13 (deprecated)
+# RSA-3DES192-SHA512 = 14 (deprecated)
+#
+# (default -1)
+preferred cipher = -1
 
 ### DATABASE #############################################################
 
