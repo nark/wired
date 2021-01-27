@@ -71,6 +71,10 @@ If you installed OpenSSL in a non-standard path, use the following command examp
 	env CPPFLAGS=-I/usr/local/opt/openssl/include \
 	     LDFLAGS=-L/usr/local/opt/openssl/lib ./configure
 
+If you installed a recent version (=>1.1.0) OpenSSL configure will complain about SSL_library_init which is deprecared, use this:
+
+	env CPPFLAGS="-DOPENSSL_API_COMPAT=0x10000000L"
+	     
 Use `./configure --help` in order to display more options.
 
 ##### 4. Compile source code:
