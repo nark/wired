@@ -132,7 +132,7 @@ To leave the session (not closing!) type
 
 If you are not familiar with "screen" visit this Site e.g.:
 
-	[https://linuxize.com/post/how-to-use-linux-screen/](https://linuxize.com/post/how-to-use-linux-screen)
+	https://linuxize.com/post/how-to-use-linux-screen
 
 ### Get More
 
