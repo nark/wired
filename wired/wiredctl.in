@@ -13,7 +13,7 @@ STATUSFILE="@wireddir@/wired.status"
 WIRED="@wireddir@/wired"
 
 # Flags to pass to wired
-WIREDFLAGS="-d @wireddir@"
+WIREDFLAGS="-D -d @wireddir@"
 
 # Begin script
 PROG=$(basename $0)
