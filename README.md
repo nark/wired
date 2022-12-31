@@ -55,6 +55,7 @@ Initialize and update submodules repositories:
 	git submodule update --init --recursive --remote
 	libwired/bootstrap
 	find . -type f -exec sed -i 's/\-O2/\-O2\ \-fno\-stack\-protector/gI' {} \;
+	sed -i 's/mktemp/mkstemp/g' libwired/libwired/file/wi-fs.c
 
 Then check that the `libwired` directory was not empty and `configure` file exists.
 
