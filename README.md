@@ -50,7 +50,7 @@ Then move to the `wired` directory:
 
 	cd wired/
 
-Initialize and update submodules repositories:
+Initialize and update submodules repositories and some fixes:
 
 	git submodule update --init --recursive --remote
 	libwired/bootstrap
