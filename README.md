@@ -120,11 +120,11 @@ If you run it in Daemon Mode your CPU will going crazy after some time (100% usa
 
 To start an installed Wired server, run:
 
-	screen -dm /usr/local/wired/wiredctl start
+	screen -Sdm wired /usr/local/wired/wiredctl start
 
 To enter the running screen session (wiredctl) simply type:
 	
-	screen -r
+	screen -rS wired
 	
 To leave the session (not closing!) type
 
