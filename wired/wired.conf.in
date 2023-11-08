@@ -26,7 +26,7 @@ map port = no
 
 # Name or id of the user that the server should operate as.
 # (default "wired")
-user = nark
+user = root
 
 # Name or id of the group that the server should operate as.
 # (default "daemon")

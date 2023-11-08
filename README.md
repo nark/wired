@@ -19,16 +19,24 @@ These are usually distributed with operating systems.
 
 **Debian/Ubuntu**
 
-	sudo apt-get install -y build-essential autoconf git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev
+	sudo apt-get install -y build-essential autoconf screen git libsqlite3-dev libxml2-dev libssl-dev zlib1g-dev autotools-dev automake
+
+**Archlinux**
+
+	sudo pacman -Sy base-devel autoconf screen git sqlite3 libxml2 zlib
 
 **CentOS 7**
 
-    sudo yum -y install git libtool openssl-devel sqlite-devel.x86_64 libxml2-devel zlib-devel autoconf gcc make
+	sudo yum -y install screen git libtool openssl-devel sqlite-devel.x86_64 libxml2-devel zlib-devel autoconf gcc make
 
 **CentOS 8 / Fedora 28/29/30/31 (and probably even older versions of Fedora)**
 
-    sudo yum -y install git libtool openssl-devel sqlite-devel libxml2-devel zlib-devel autoconf gcc make
+	sudo yum -y install screen git libtool openssl-devel sqlite-devel libxml2-devel zlib-devel autoconf gcc make
 
+**openSUSE Leap 42.3 (and probably other Versions)**
+
+	sudo zypper install -t pattern devel_basis 
+	sudo zypper install screen git sqlite3-devel libxml2-devel libz1 openssl-devel
 
 ### Getting started
 
@@ -36,7 +44,7 @@ Installing Wired Server from sources will be done using the Autotools standard (
 
 ##### 1. Get Wired Server sources via Terminal (git must be installed!):
 
-	git clone https://github.com/nark/wired wired
+	git clone https://github.com/ProfDrLuigi/wired wired
 
 Then move to the `wired` directory:
 
@@ -45,8 +53,13 @@ Then move to the `wired` directory:
 Initialize and update submodules repositories:
 
 	git submodule update --init --recursive --remote
-
 	libwired/bootstrap
+
+Let´s do some minor fixes:
+
+	find . -type f -exec sed -i 's/\-O2/\-O2\ \-fno\-stack\-protector/gI' {} \;
+	sed -i 's/mktemp/mkstemp/g' libwired/libwired/file/wi-fs.c
+
 
 Then check that the `libwired` directory was not empty and `configure` file exists.
 
@@ -73,6 +86,8 @@ If you installed OpenSSL in a non-standard path, use the following command examp
 
 Use `./configure --help` in order to display more options.
 
+
+
 ##### 4. Compile source code:
 
 On GNU-like unices, type:
@@ -98,63 +113,33 @@ This will require write permissions to `/usr/local/`, or whatever directory you 
 
 ##### 6. Running Wired Server
 
-To start an installed Wired server, run:
-
-	/usr/local/wired/wiredctl start
-
 By default a user with the login "admin" and no password is created. Use Wired Client or Wire to connect to your newly installed Wired Server. 
 
-### Running on Docker
+Wired is compiled as foreground Task in Debug mode. Thats why you nee to run it in a screen-Session.
+If you run it in Daemon Mode your CPU will going crazy after some time (100% usage).
 
-Pull and run the container:
+To start an installed Wired server, run:
 
-    docker run --name wired -d -p 4871:4871 -v /path/to/yours/files:/files wired2/wired:2.5
+	screen -Sdm wired /usr/local/wired/wiredctl start
 
-* the `-p` option maps the container port (`4871`) to whatever the port you want to use on your host machine. If you want `wired` to be available on another you can use: `10000:4871` and Docker will translate it.
-* the `-v` option maps items of the container file system with your local file system. You can change the first value of the pair to adjust to your server files configuration. Wired Server will look into the `/files` path of the container to index and server your files. 
+To enter the running screen session (wiredctl) simply type:
+	
+	screen -rS wired
+	
+To leave the session (not closing!) type
 
-If you want Docker to start the container automatically for you, add the `--restart always` argument as follow:
+	ctrl + a and than d
 
-    docker run --name wired --restart always -d -p 4871:4871 -v /path/to/yours/files:/files wired2/wired:2.5
+If you are not familiar with "screen" visit this Site e.g.:
 
-Start/stop the container:
-
-    docker stop wired
-    docker start wired
-    
-Remove the container:
-
-    docker rm wired
-    
-It could be useful to backup and restore container files such as `database.sqlite3` or `wired.conf`. You can do that do using the `docker cp` command.
-    
-From container to host:
-    
-    docker cp wired:/user/local/wired/database.sqlite3 /path/to/your/database.sqlite3
-
-From host to container:
-
-    docker cp /path/to/your/database.sqlite3 wired:/user/local/wired/database.sqlite3
-    
-Build the image locally:
-
-    cd wired/
-    docker build --tag wired:2.5 .
-    
-Tag the image:
-    
-    docker tag <image_id> wired2/wired:2.5
-    
-Push to Docker Hub:
-    
-    docker push wired2/wired:2.5
+	https://linuxize.com/post/how-to-use-linux-screen
 
 ### Get More
 
-If you are interested in the Wired project, check the Website at [http://wired.read-write.fr/](http://wired.read-write.fr)
+If you are interested in the Wired project, check the Website at [https://wired.read-write.fr/](https://wired.read-write.fr)
 
 ### Troubleshootings
 
-This implementation of the Wired 2.0 protocol is not compliant with the version of the protocol distributed by Zanka Software, for several deep technical reasons.
+This implementation of the Wired 2.0/2.5 protocol is not compliant with the version of the protocol distributed by Zanka Software, for several deep technical reasons.
 
 
