@@ -1,4 +1,4 @@
 [submodule "libwired"]
 	path = libwired
-	url = https://github.com/nark/libwired
+	url = https://github.com/profdrluigi/libwired
 	branch = master
