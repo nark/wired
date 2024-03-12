@@ -95,7 +95,7 @@
 #define WD_VERSION "2.5"
 
 /* Subversion revision */
-#define WI_REVISION "2.5.2"
+#define WI_REVISION "2.5.3"
 
 /* SQLite does not support backup */
 #define WI_SQLITE_SUPPORTS_BACKUP 1
